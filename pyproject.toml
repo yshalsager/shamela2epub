@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "shamela2epub"
+version = "0.1.0"
+description = "A CLI tool to convert a book on https://shamela.ws to an EPUB book."
+authors = ["yshalsager <ysh-alsager@hotmail.com>"]
+license = "GPL-3.0-only"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+httpx = "^0.23.0"
+beautifulsoup4 = "^4.11.1"
+EbookLib = "^0.17.1"
+click = "^8.1.3"
+
+[tool.poetry.dev-dependencies]
+black = "^22.6.0"
+pre-commit = "^2.19.0"
+isort = "^5.10.1"
+mypy = "^0.961"
+flake8 = "^4.0.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+include = '(shamela2epub\/.*$|\.pyi?$)'
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | \.venv
+)/
+'''
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+files = ["shamela2epub"]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+#disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+show_error_codes = true
+warn_unused_ignores = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
