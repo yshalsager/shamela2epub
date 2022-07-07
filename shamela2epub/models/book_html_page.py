@@ -1,6 +1,7 @@
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from bs4 import BeautifulSoup, Tag
+from bs4.element import PageElement
 from httpx import get
 
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
@@ -18,12 +19,13 @@ class BookHTMLPage:
     CHAPTER_TITLE_SELECTOR = "div.size-12 span.text-black"
 
     def __init__(self, url: str):
+        self._url = url
         self._html: BeautifulSoup = BeautifulSoup(get(url).content, "html.parser")
         self._remove_copy_btn_from_html()
+        self.page_url = self._url.split("#")[0]
 
     def _remove_copy_btn_from_html(self) -> None:
-        copy_buttons = self._html.select(self.COPY_BTN_SELECTOR)
-        for btn in copy_buttons:
+        for btn in self._html.select(self.COPY_BTN_SELECTOR):
             btn.decompose()
 
     @property
@@ -73,9 +75,21 @@ class BookHTMLPage:
     def content(self) -> Tag:
         return self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
 
+    def parse_toc(self, toc: Tag) -> List[Dict[str, str]]:
+        toc_list: List = []
+        item: Tag
+        for item in toc.children:
+            ul_list = item.find("ul")
+            if not ul_list:
+                link = item.select_one("a")
+                toc_list.append({"url": link["href"], "title": link.text})
+            else:
+                toc_list.append(self.parse_toc(ul_list))
+        return toc_list
+
     @property
-    def toc(self) -> Tag:
-        return self._html.select_one(self.BOOK_TOC_SELECTOR)
+    def toc(self) -> List[Any]:
+        return self.parse_toc(self._html.select_one(self.BOOK_TOC_SELECTOR))
 
     @property
     def chapter_title(self) -> Any:

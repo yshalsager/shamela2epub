@@ -31,10 +31,9 @@ def download(url: str, output: str) -> None:
     next_page_url = get_book_first_page_url(url)
     logger.info(f"Getting page {next_page_url}.")
     book_html_page = BookHTMLPage(next_page_url)
-    epub_book = EPUBBook(book_html_page.last_page)
+    epub_book = EPUBBook(book_html_page.last_page, book_html_page.toc)
     logger.info(f"Working on book {book_html_page.title} by {book_html_page.author}")
     epub_book.create_first_page(book_html_page)
-    print(book_html_page.toc)
     has_next = True
     # Other pages
     next_page_url = book_html_page.next_page_url
