@@ -12,7 +12,7 @@ class EPUBBook:
         self._zfill_length = len(pages_count) + 1
         self.book: EpubBook = EpubBook()
         self.pages: List[EpubHtml] = []
-        self.sections: List[EpubHtml] = []
+        self.sections: List[Link] = []
 
     def create_first_page(self, book_html_page: BookHTMLPage) -> None:
         self.book.set_language("ar")
@@ -23,23 +23,20 @@ class EPUBBook:
         new_page = self.add_page(
             book_html_page, file_name="info.xhtml", title="بطاقة الكتاب"
         )
-        self.sections.append(new_page)
+        self.sections.append(Link("info.xhtml", "بطاقة الكتاب", "info"))
 
     def add_chapter(
         self, chapters_in_page: Dict, new_page: EpubHtml, default_page_filename: str
     ) -> None:
         # TODO: Handle nested chapters properly.
-        if len(chapters_in_page) == 1:
-            self.sections.append(new_page)
-        else:
-            self.sections += [
-                Link(
-                    default_page_filename,
-                    i,
-                    default_page_filename.replace(".xhtml", ""),
-                )
-                for i in chapters_in_page
-            ]
+        self.sections += [
+            Link(
+                default_page_filename,
+                i,
+                default_page_filename.replace(".xhtml", ""),
+            )
+            for i in chapters_in_page
+        ]
 
     def add_page(
         self, book_html_page: BookHTMLPage, file_name: str = "", title: str = ""
@@ -62,6 +59,24 @@ class EPUBBook:
         if chapters_in_page:
             self.add_chapter(chapters_in_page, new_page, default_page_filename)
         return new_page
+
+    def order_chapters(self, toc_chapters_levels: Dict[str, int]) -> None:
+        chapters = [self.sections.pop(0)]
+        for previous_section, section in zip(self.sections, self.sections[1:]):
+            previous_level = toc_chapters_levels[previous_section.title]
+            level = toc_chapters_levels[section.title]
+            if level > previous_level:
+                chapters.pop()
+                chapters.append([previous_section, [section]])
+            else:
+                if level == previous_level and isinstance(chapters[-1], list):
+                    nested = chapters[-1]
+                    while isinstance(nested[-1], list):
+                        nested = nested[-1]
+                    nested.append(section)
+                else:
+                    chapters.append(section)
+        self.sections = chapters
 
     def save_book(self, book_name: str) -> None:
         self.book.toc = self.sections

@@ -26,6 +26,7 @@ class BookHTMLPage:
         self._remove_copy_btn_from_html()
         self.page_url = self._url.split("#")[0]
         self._chapters_by_page: Dict[str, str] = {}
+        self._toc_chapters_levels: Dict[str, int] = {}
 
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
@@ -78,21 +79,26 @@ class BookHTMLPage:
     def content(self) -> Tag:
         return self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
 
-    def parse_toc(self, toc: Tag) -> List[Dict[str, str]]:
-        toc_list: List = []
+    def parse_toc_levels(self, toc: Tag, current_level: int = 1) -> Dict[str, int]:
+        toc_levels: Dict = {}
         item: Tag
         for item in toc.children:
+            toc_levels.update(
+                {item.select_one(self.CHAPTERS_SELECTOR).text: current_level}
+            )
             ul_list = item.find("ul")
-            if not ul_list:
-                link = item.select_one("a")
-                toc_list.append({"url": link["href"], "title": link.text})
-            else:
-                toc_list.append(self.parse_toc(ul_list))
-        return toc_list
+            if ul_list:
+                toc_levels.update(self.parse_toc_levels(ul_list, current_level + 1))
+        return toc_levels
 
     @property
-    def toc(self) -> List[Any]:
-        return self.parse_toc(self._html.select_one(self.BOOK_TOC_SELECTOR))
+    def toc_chapters_levels(self) -> Dict[str, int]:
+        if self._toc_chapters_levels:
+            return self._toc_chapters_levels
+        self._toc_chapters_levels = self.parse_toc_levels(
+            self._html.select_one(self.BOOK_TOC_SELECTOR)
+        )
+        return self._toc_chapters_levels
 
     @property
     def chapters_by_page(self) -> Any:
@@ -108,4 +114,4 @@ class BookHTMLPage:
             else:
                 chapters.update({chapter_url: [chapter.text]})
         self._chapters_by_page = chapters
-        return chapters
+        return self._chapters_by_page

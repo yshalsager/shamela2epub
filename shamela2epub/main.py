@@ -44,12 +44,11 @@ def download(url: str, output: str) -> None:
         if not book_html_page.has_next_page:
             has_next = False
         next_page_url = book_html_page.next_page_url
-        # if book_html_page.next_page == "5":
-        #     break
     # Save new book
     logger.info("Saving the new book")
     output_book = (
         output or f"{OUT_DIR}/{book_html_page.title} - {book_html_page.author}.epub"
     )
+    epub_book.order_chapters(book_html_page.toc_chapters_levels)
     epub_book.save_book(output_book)
     logger.info(f"Done! You can find the book at: {output_book}")
