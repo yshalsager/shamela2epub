@@ -4,25 +4,36 @@ from ebooklib.epub import EpubBook, EpubHtml, EpubNav, EpubNcx, Link, write_epub
 
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
 from shamela2epub.models.book_html_page import BookHTMLPage
+from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 
 
 class EPUBBook:
-    def __init__(self, pages_count: str) -> None:
-        self.pages_count = int(pages_count)
-        self._zfill_length = len(pages_count) + 1
+    def __init__(self) -> None:
+        self.pages_count: str = ""
+        self._zfill_length = 0
         self.book: EpubBook = EpubBook()
         self.pages: List[EpubHtml] = []
         self.sections: List[Link] = []
 
-    def create_first_page(self, book_html_page: BookHTMLPage) -> None:
+    def set_page_count(self, count: str) -> None:
+        self.pages_count = count
+        self._zfill_length = len(count) + 1
+
+    def create_info_page(self, book_info_html_page: BookInfoHTMLPage) -> None:
         self.book.set_language("ar")
         self.book.set_direction("rtl")
-        self.book.set_title(book_html_page.title)
-        self.book.add_author(book_html_page.author)
+        self.book.set_title(book_info_html_page.title)
+        self.book.add_author(book_info_html_page.author)
         self.book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
-        new_page = self.add_page(
-            book_html_page, file_name="info.xhtml", title="بطاقة الكتاب"
+        info_page = EpubHtml(
+            title="بطاقة الكتاب",
+            file_name="info.xhtml",
+            lang="ar",
+            direction="rtl",
+            content=f"<html><body>{book_info_html_page.content}</body></html>",
         )
+        self.book.add_item(info_page)
+        self.pages.append(info_page)
         self.sections.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
 
     def add_chapter(
@@ -70,6 +81,7 @@ class EPUBBook:
         return new_page
 
     def order_chapters(self, toc_chapters_levels: Dict[str, int]) -> None:
+        # TODO Fix TOC levels more than three
         chapters = []
         for idx, item in enumerate(self.sections[:2]):
             if idx == 0:

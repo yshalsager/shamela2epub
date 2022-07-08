@@ -1,17 +1,13 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict
 
-from bs4 import BeautifulSoup, Tag
-from bs4.element import PageElement
-from httpx import get
+from bs4 import Tag
 
 from shamela2epub.misc.constants import BOOK_URL
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
+from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
-class BookHTMLPage:
-    BOOK_TITLE_SELECTOR = "h1 a"
-    BOOK_AUTHOR_SELECTOR = "h1 + div a"
-    BOOK_PAGE_CONTENT_SELECTOR = "div.nass"
+class BookHTMLPage(BookBaseHTMLPage):
     BOOK_TOC_SELECTOR = "div.s-nav-head + ul"
     COPY_BTN_SELECTOR = "a.btn_tag"
     PAGE_NUMBER_SELECTOR = "input#fld_goto_bottom"
@@ -22,8 +18,7 @@ class BookHTMLPage:
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_URL}/']"
 
     def __init__(self, url: str):
-        self._url = url
-        self._html: BeautifulSoup = BeautifulSoup(get(url).content, "html.parser")
+        super().__init__(url)
         self._remove_copy_btn_from_html()
         self.page_url = self._url.split("#")[0]
         self._chapters_by_page: Dict[str, str] = {}
@@ -32,14 +27,6 @@ class BookHTMLPage:
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
             btn.decompose()
-
-    @property
-    def title(self) -> Any:
-        return self._html.select_one(self.BOOK_TITLE_SELECTOR).text.strip()
-
-    @property
-    def author(self) -> Any:
-        return self._html.select_one(self.BOOK_AUTHOR_SELECTOR).text.strip()
 
     @property
     def current_page(self) -> Any:
@@ -75,10 +62,6 @@ class BookHTMLPage:
         if not last_page_element:
             return ""
         return self._get_page_number(last_page_element)
-
-    @property
-    def content(self) -> Tag:
-        return self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
 
     def parse_toc_levels(self, toc: Tag, current_level: int = 1) -> Dict[str, int]:
         toc_levels: Dict = {}
