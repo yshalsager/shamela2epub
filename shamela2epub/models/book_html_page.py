@@ -15,6 +15,7 @@ class BookHTMLPage:
     BOOK_TOC_SELECTOR = "div.s-nav-head + ul"
     COPY_BTN_SELECTOR = "a.btn_tag"
     PAGE_NUMBER_SELECTOR = "input#fld_goto_bottom"
+    PAGE_PART_SELECTOR = "#fld_part_top ~ div button"
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
     CHAPTER_TITLE_SELECTOR = "div.size-12 span.text-black"
@@ -115,3 +116,8 @@ class BookHTMLPage:
                 chapters.update({chapter_url: [chapter.text]})
         self._chapters_by_page = chapters
         return self._chapters_by_page
+
+    @property
+    def part(self) -> Any:
+        part_element: Tag = self._html.select_one(self.PAGE_PART_SELECTOR)
+        return part_element.text.strip() if part_element else ""
