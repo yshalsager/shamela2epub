@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup, Tag
 from bs4.element import PageElement
 from httpx import get
 
+from shamela2epub.misc.constants import BOOK_URL
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
 
 
@@ -17,12 +18,14 @@ class BookHTMLPage:
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
     CHAPTER_TITLE_SELECTOR = "div.size-12 span.text-black"
+    CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_URL}/']"
 
     def __init__(self, url: str):
         self._url = url
         self._html: BeautifulSoup = BeautifulSoup(get(url).content, "html.parser")
         self._remove_copy_btn_from_html()
         self.page_url = self._url.split("#")[0]
+        self._chapters_by_page: Dict[str, str] = {}
 
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
@@ -92,6 +95,17 @@ class BookHTMLPage:
         return self.parse_toc(self._html.select_one(self.BOOK_TOC_SELECTOR))
 
     @property
-    def chapter_title(self) -> Any:
-        chapter_hierarchy = self._html.select(self.CHAPTER_TITLE_SELECTOR)
-        return chapter_hierarchy[-1].text or chapter_hierarchy[0].text
+    def chapters_by_page(self) -> Any:
+        if self._chapters_by_page:
+            return self.chapters_by_page
+        chapters_list = self._html.select(self.CHAPTERS_SELECTOR)
+        chapters: Dict = {}
+        for chapter in chapters_list:
+            chapter_url = chapter.get("href")
+            if chapters.get(chapter_url):
+                chapters[chapter_url].append(chapter.text)
+                chapters.update({chapter_url: chapters[chapter_url]})
+            else:
+                chapters.update({chapter_url: [chapter.text]})
+        self._chapters_by_page = chapters
+        return chapters
