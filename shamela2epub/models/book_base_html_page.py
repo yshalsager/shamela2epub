@@ -8,8 +8,8 @@ class BookBaseHTMLPage:
     BOOK_PAGE_CONTENT_SELECTOR = "div.nass"
 
     def __init__(self, url: str):
-        self._url = url
-        self._html: BeautifulSoup = BeautifulSoup(get(url).content, "html.parser")
+        self.url = url
+        self._html: BeautifulSoup = BeautifulSoup(get(self.url).content, "html.parser")
 
     @property
     def content(self) -> Tag:

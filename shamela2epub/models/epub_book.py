@@ -1,4 +1,4 @@
-from typing import Dict, List, Set
+from typing import Dict, List
 
 from ebooklib.epub import EpubBook, EpubHtml, EpubNav, EpubNcx, Link, write_epub
 
@@ -14,6 +14,7 @@ class EPUBBook:
         self.book: EpubBook = EpubBook()
         self.pages: List[EpubHtml] = []
         self.sections: List[Link] = []
+        self.sections_map: Dict[str, Link] = {}
 
     def set_page_count(self, count: str) -> None:
         self.pages_count = count
@@ -25,6 +26,7 @@ class EPUBBook:
         self.book.set_title(book_info_html_page.title)
         self.book.add_author(book_info_html_page.author)
         self.book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
+        self.book.add_metadata("DC", "source", book_info_html_page.url)
         info_page = EpubHtml(
             title="بطاقة الكتاب",
             file_name="info.xhtml",
@@ -34,21 +36,18 @@ class EPUBBook:
         )
         self.book.add_item(info_page)
         self.pages.append(info_page)
-        self.sections.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
 
     def add_chapter(
         self, chapters_in_page: Dict, new_page: EpubHtml, page_filename: str
     ) -> None:
-        self.sections.extend(
-            [
-                Link(
-                    page_filename,
-                    i,
-                    page_filename.replace(".xhtml", ""),
-                )
-                for i in chapters_in_page
-            ]
-        )
+        for i in chapters_in_page:
+            link = Link(
+                page_filename,
+                i,
+                page_filename.replace(".xhtml", ""),
+            )
+            self.sections.append(link)
+            self.sections_map.update({i: link})
 
     def add_page(
         self, book_html_page: BookHTMLPage, file_name: str = "", title: str = ""
@@ -80,41 +79,21 @@ class EPUBBook:
             self.add_chapter(chapters_in_page, new_page, page_filename)
         return new_page
 
-    def order_chapters(self, toc_chapters_levels: Dict[str, int]) -> None:
-        # TODO Fix TOC levels more than three
-        chapters = []
-        for idx, item in enumerate(self.sections[:2]):
-            if idx == 0:
-                chapters.append(self.sections.pop(idx))
+    def _update_toc_list(self, toc: List) -> None:
+        for index, element in enumerate(toc):
+            if isinstance(element, list):
+                self._update_toc_list(element)
             else:
-                chapters.append(item)
-        for previous_section, section in zip(self.sections, self.sections[1:]):
-            previous_level = toc_chapters_levels.get(previous_section.title, 1)
-            level = toc_chapters_levels.get(section.title, 1)
-            if level > previous_level:
-                if isinstance(chapters[-1], list):
-                    nested = chapters[-1]
-                    while isinstance(nested[-1], list):
-                        nested = nested[-1]
-                    last = nested.pop()
-                    chapters.append([last, [section]])
-                else:
-                    if chapters[-1].title == previous_section.title:
-                        chapters.pop()
-                    chapters.append([previous_section, [section]])
-            else:
-                if level == previous_level and isinstance(chapters[-1], list):
-                    nested = chapters[-1]
-                    while isinstance(nested[-1], list):
-                        nested = nested[-1]
-                    nested.append(section)
-                else:
-                    chapters.append(section)
-        self.sections = chapters
+                toc[index] = self.sections_map.get(element, None)
+
+    def generate_toc(self, toc_list: List) -> None:
+        self._update_toc_list(toc_list)
+        toc_list.insert(0, Link("nav.xhtml", "فهرس الموضوعات", "nav"))
+        toc_list.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
+        self.book.toc = toc_list
 
     def save_book(self, book_name: str) -> None:
-        self.book.toc = self.sections
-        self.book.spine = ["nav", *self.pages]
+        self.book.spine = [self.pages[0], "nav", *self.pages[1:]]  # [info, nav, rest]
         self.book.add_item(EpubNcx())
         self.book.add_item(EpubNav(direction="rtl"))
         write_epub(book_name, self.book)

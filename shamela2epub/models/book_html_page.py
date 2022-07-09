@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from bs4 import Tag
 
@@ -14,13 +14,12 @@ class BookHTMLPage(BookBaseHTMLPage):
     PAGE_PART_SELECTOR = "#fld_part_top ~ div button"
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
-    CHAPTER_TITLE_SELECTOR = "div.size-12 span.text-black"
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_URL}/']"
 
     def __init__(self, url: str):
         super().__init__(url)
         self._remove_copy_btn_from_html()
-        self.page_url = self._url.split("#")[0]
+        self.page_url = self.url.split("#")[0]
         self._chapters_by_page: Dict[str, str] = {}
         self._toc_chapters_levels: Dict[str, int] = {}
 
@@ -63,26 +62,24 @@ class BookHTMLPage(BookBaseHTMLPage):
             return ""
         return self._get_page_number(last_page_element)
 
-    def parse_toc_levels(self, toc: Tag, current_level: int = 1) -> Dict[str, int]:
-        toc_levels: Dict = {}
+    def parse_toc(self, toc: Tag) -> List:
+        toc_list: List = []
         item: Tag
         for item in toc.children:
-            toc_levels.update(
-                {item.select_one(self.CHAPTERS_SELECTOR).text: current_level}
-            )
-            ul_list = item.find("ul")
+            link = item.select_one("a")
+            ul_list = item.select_one("ul")
             if ul_list:
-                toc_levels.update(self.parse_toc_levels(ul_list, current_level + 1))
-        return toc_levels
+                toc_list.append([link.text, self.parse_toc(ul_list)])
+            else:
+                toc_list.append(link.text)
+        return toc_list
 
     @property
-    def toc_chapters_levels(self) -> Dict[str, int]:
-        if self._toc_chapters_levels:
-            return self._toc_chapters_levels
-        self._toc_chapters_levels = self.parse_toc_levels(
-            self._html.select_one(self.BOOK_TOC_SELECTOR)
-        )
-        return self._toc_chapters_levels
+    def toc(self) -> List[Any]:
+        toc_ul: Tag = self._html.select_one(self.BOOK_TOC_SELECTOR)
+        for item in toc_ul.select('a[href="javascript:;"]'):
+            item.decompose()
+        return self.parse_toc(toc_ul)
 
     @property
     def chapters_by_page(self) -> Any:
