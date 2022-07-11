@@ -1,6 +1,8 @@
+from pathlib import Path
 from re import Match
 from typing import Dict, Optional
 
+from shamela2epub import WORK_DIR
 from shamela2epub.misc.constants import BOOK_URL, SHAMELA_DOMAIN
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
 
@@ -23,3 +25,7 @@ def get_book_first_page_url(url: str) -> str:
 def get_book_info_page_url(url: str) -> str:
     info: Dict[str, str] = get_info_from_url(url)
     return f"https://{SHAMELA_DOMAIN}/{BOOK_URL}/{info['bookID']}/"
+
+
+def get_stylesheet() -> str:
+    return Path(WORK_DIR / "assets/styles.css").read_text()

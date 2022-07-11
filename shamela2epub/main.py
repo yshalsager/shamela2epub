@@ -35,6 +35,7 @@ def download(url: str, output: str) -> None:
     # Info Page
     book_info_page = BookInfoHTMLPage(get_book_info_page_url(url))
     epub_book = EPUBBook()
+    epub_book.init()
     epub_book.create_info_page(book_info_page)
     logger.info(f"Working on book {book_info_page.title} by {book_info_page.author}")
     # First Page

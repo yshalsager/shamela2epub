@@ -1,9 +1,18 @@
 from typing import Dict, List, Union
 
-from ebooklib.epub import EpubBook, EpubHtml, EpubNav, EpubNcx, Link, write_epub
+from ebooklib.epub import (
+    EpubBook,
+    EpubHtml,
+    EpubItem,
+    EpubNav,
+    EpubNcx,
+    Link,
+    write_epub,
+)
 
 from shamela2epub import __version__
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
+from shamela2epub.misc.utils import get_stylesheet
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 
@@ -17,6 +26,7 @@ class EPUBBook:
         self.sections: List[Link] = []
         self.sections_map: Dict[str, Link] = {}
         self.parts_map: Dict[str, int] = {}
+        self.default_css: EpubItem = EpubItem()
 
     def set_page_count(self, count: str) -> None:
         self.pages_count = count
@@ -25,23 +35,32 @@ class EPUBBook:
     def set_parts_map(self, parts_map: Dict[str, int]) -> None:
         self.parts_map = parts_map
 
-    def create_info_page(self, book_info_html_page: BookInfoHTMLPage) -> None:
+    def init(self) -> None:
         self.book.set_language("ar")
         self.book.set_direction("rtl")
-        self.book.set_title(book_info_html_page.title)
-        self.book.add_author(book_info_html_page.author)
         self.book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
-        self.book.add_metadata("DC", "source", book_info_html_page.url)
         self.book.add_metadata(
             None, "meta", "", {"name": "shamela2epub", "content": __version__}
         )
+        self.default_css = EpubItem(
+            uid="style_default",
+            file_name="style/styles.css",
+            media_type="text/css",
+            content=get_stylesheet(),
+        )
+        self.book.add_item(self.default_css)
+
+    def create_info_page(self, book_info_html_page: BookInfoHTMLPage) -> None:
+        self.book.set_title(book_info_html_page.title)
+        self.book.add_author(book_info_html_page.author)
+        self.book.add_metadata("DC", "source", book_info_html_page.url)
         info_page = EpubHtml(
             title="بطاقة الكتاب",
             file_name="info.xhtml",
             lang="ar",
-            direction="rtl",
             content=f"<html><body>{book_info_html_page.content}</body></html>",
         )
+        info_page.add_item(self.default_css)
         self.book.add_item(info_page)
         self.pages.append(info_page)
 
@@ -76,11 +95,11 @@ class EPUBBook:
             title=title,
             file_name=file_name or page_filename,
             lang="ar",
-            direction="rtl",
             content=f"<html><body>{book_html_page.content}<hr>"
-            f"<div style='text-align: center;'>{footer}</div>"
+            f'<div class="text-center">{footer}</div>'
             f"</body></html>",
         )
+        new_page.add_item(self.default_css)
         self.book.add_item(new_page)
         self.pages.append(new_page)
         if chapters_in_page:
@@ -101,9 +120,11 @@ class EPUBBook:
         toc_list.insert(0, Link("nav.xhtml", "فهرس الموضوعات", "nav"))
         toc_list.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
         self.book.toc = toc_list
+        self.book.add_item(EpubNcx())
+        nav = EpubNav()
+        nav.add_item(self.default_css)
+        self.book.add_item(nav)
+        self.book.spine = [self.pages[0], "nav", *self.pages[1:]]  # [info, nav, rest]
 
     def save_book(self, book_name: str) -> None:
-        self.book.spine = [self.pages[0], "nav", *self.pages[1:]]  # [info, nav, rest]
-        self.book.add_item(EpubNcx())
-        self.book.add_item(EpubNav(direction="rtl"))
         write_epub(book_name, self.book)

@@ -127,7 +127,8 @@ class BookHTMLPage(BookBaseHTMLPage):
             lambda x: isinstance(x, Tag) and x.get("class", None),
             content.recursiveChildGenerator(),
         ):
-            del element["class"]
+            if element["class"] != "text-center":
+                del element["class"]
         # Delete empty spans
         for element in content.select("span"):
             if not element.text:

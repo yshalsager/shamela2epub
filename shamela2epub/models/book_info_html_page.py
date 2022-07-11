@@ -19,3 +19,4 @@ class BookInfoHTMLPage(BookBaseHTMLPage):
     def _sanitize_html(self) -> None:
         self._html.select_one(self.INDEX_SELECTOR).decompose()
         self._html.select_one(self.SEARCH_SELECTOR).decompose()
+        del self.content["class"]
