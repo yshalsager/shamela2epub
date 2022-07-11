@@ -1,11 +1,10 @@
 # shamela2epub
 
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 [![PayPal](https://img.shields.io/badge/PayPal-Donate-00457C?style=flat&labelColor=00457C&logo=PayPal&logoColor=white&link=https://www.paypal.me/yshalsager)](https://www.paypal.me/yshalsager)
-[![Patreon](https://img.shields.io/badge/Patreon-Support-F96854?style=flat&labelColor=F96854&logo=Patreon&logoColor=white&link=https://www.patreon.com/XiaomiFirmwareUpdater)](https://www.patreon.com/XiaomiFirmwareUpdater)
-[![Liberapay](https://img.shields.io/badge/Liberapay-Support-F6C915?style=flat&labelColor=F6C915&logo=Liberapay&logoColor=white&link=https://liberapay.com/yshalsager)](https://liberapay.com/yshalsager)
+[![LiberaPay](https://img.shields.io/badge/Liberapay-Support-F6C915?style=flat&labelColor=F6C915&logo=Liberapay&logoColor=white&link=https://liberapay.com/yshalsager)](https://liberapay.com/yshalsager)
 
 A CLI tool to download a book on https://shamela.ws into an EPUB book.
 
@@ -34,3 +33,34 @@ Options:
   -o, --output TEXT  ePub output book custom name
   --help             Show this message and exit.
 ```
+
+## Features
+
+- Creates an EPUB3 standard book.
+- Automatically adds a page for book information.
+- Automatically generated table of contents with support for nested chapters.
+- Automatically adds book part and page number to each page's footer.
+- Sanitizes the book HTML from unnecessary elements and classes.
+
+## Known Issues
+
+- Books that have a last nested section with level deeper (e.g. 3) than its next section (e.g. 2) and both have the same
+  page number (e.g. `page_017.xhtml`) cannot be converted to KFX unless that last nested section is removed.
+
+## TODO
+
+### Next
+
+- Rename part in page name to English
+- Add tool tag to created books
+- Clean html classes
+- Use class for text center
+- Add dependabot, funding and actions to the repo
+- Tag releases
+
+### Maybe
+
+- Maybe Use classes for colors
+- Maybe GUI
+- Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
+  removing it from the TOC

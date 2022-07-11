@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from ebooklib.epub import EpubBook, EpubHtml, EpubNav, EpubNcx, Link, write_epub
 
@@ -80,6 +80,8 @@ class EPUBBook:
         return new_page
 
     def _update_toc_list(self, toc: List) -> None:
+        # Bug: Books that have a last nested section with level deeper than its next with the same page number
+        # cannot be converted to KFX unless that last nested section is removed.
         for index, element in enumerate(toc):
             if isinstance(element, list):
                 self._update_toc_list(element)
