@@ -15,10 +15,14 @@ class EPUBBook:
         self.pages: List[EpubHtml] = []
         self.sections: List[Link] = []
         self.sections_map: Dict[str, Link] = {}
+        self.parts_map: Dict[str, int] = {}
 
     def set_page_count(self, count: str) -> None:
         self.pages_count = count
         self._zfill_length = len(count) + 1
+
+    def set_parts_map(self, parts_map: Dict[str, int]) -> None:
+        self.parts_map = parts_map
 
     def create_info_page(self, book_info_html_page: BookInfoHTMLPage) -> None:
         self.book.set_language("ar")
@@ -57,7 +61,7 @@ class EPUBBook:
             title = chapters_in_page[0]
         part = book_html_page.part
         page_filename = (
-            f"page{'_' if part else ''}{part}_"
+            f"page{'_' if part else ''}{self.parts_map[part] if self.parts_map else ''}_"
             f"{book_html_page.current_page.zfill(self._zfill_length)}.xhtml"
         )
         footer = ""

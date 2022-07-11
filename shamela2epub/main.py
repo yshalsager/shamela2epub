@@ -42,6 +42,7 @@ def download(url: str, output: str) -> None:
     logger.info(f"Getting page {first_page_url}.")
     book_html_page = BookHTMLPage(first_page_url)
     epub_book.set_page_count(book_html_page.last_page)
+    epub_book.set_parts_map(book_html_page.parts_map)
     epub_book.add_page(book_html_page)
     # Other pages
     has_next = book_html_page.has_next_page

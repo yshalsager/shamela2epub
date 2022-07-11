@@ -51,7 +51,6 @@ Options:
 
 ### Next
 
-- Rename part in page name to English
 - Add tool tag to created books
 - Clean html classes
 - Use class for text center

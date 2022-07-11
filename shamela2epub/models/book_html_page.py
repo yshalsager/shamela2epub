@@ -11,7 +11,9 @@ class BookHTMLPage(BookBaseHTMLPage):
     BOOK_TOC_SELECTOR = "div.s-nav-head + ul"
     COPY_BTN_SELECTOR = "a.btn_tag"
     PAGE_NUMBER_SELECTOR = "input#fld_goto_bottom"
-    PAGE_PART_SELECTOR = "#fld_part_top ~ div button"
+    PAGE_PARTS_SELECTOR = "#fld_part_top ~ div"
+    PAGE_PARTS_MENU_SELECTOR = f"{PAGE_PARTS_SELECTOR} ul[role='menu']"
+    PAGE_PART_SELECTOR = f"{PAGE_PARTS_SELECTOR} button"
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_URL}/']"
@@ -101,3 +103,12 @@ class BookHTMLPage(BookBaseHTMLPage):
     def part(self) -> Any:
         part_element: Tag = self._html.select_one(self.PAGE_PART_SELECTOR)
         return part_element.text.strip() if part_element else ""
+
+    @property
+    def parts_map(self) -> Dict[str, int]:
+        parts: Tag = self._html.select_one(self.PAGE_PARTS_MENU_SELECTOR)
+        return (
+            {part.text: index for index, part in enumerate(parts.select("li a")[1:])}
+            if parts
+            else {}
+        )
