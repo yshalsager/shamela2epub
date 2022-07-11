@@ -1,12 +1,28 @@
 """ Module initialization"""
 import json
 import logging
+from importlib import metadata
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 from sys import stderr, stdout
 
+import toml
+
 WORK_DIR = Path(__package__).absolute()
 PARENT_DIR = WORK_DIR.parent
+
+# Set package version dynamically
+try:
+    # In production use package metadata
+    __version__ = metadata.version(__package__)
+except metadata.PackageNotFoundError:
+    # otherwise, read version from pyproject
+
+    __version__ = toml.loads((PARENT_DIR / "pyproject.toml").read_text())["tool"][
+        "poetry"
+    ]["version"]
+
+
 OUT_DIR = PARENT_DIR / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 # Logging

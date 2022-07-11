@@ -36,7 +36,7 @@ Options:
 
 ## Features
 
-- Creates an EPUB3 standard book.
+- Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) standard book.
 - Automatically adds a page for book information.
 - Automatically generated table of contents with support for nested chapters.
 - Automatically adds book part and page number to each page's footer.
@@ -51,7 +51,6 @@ Options:
 
 ### Next
 
-- Add tool tag to created books
 - Clean html classes
 - Use class for text center
 - Add dependabot, funding and actions to the repo

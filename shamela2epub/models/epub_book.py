@@ -2,6 +2,7 @@ from typing import Dict, List, Union
 
 from ebooklib.epub import EpubBook, EpubHtml, EpubNav, EpubNcx, Link, write_epub
 
+from shamela2epub import __version__
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
@@ -31,6 +32,9 @@ class EPUBBook:
         self.book.add_author(book_info_html_page.author)
         self.book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
         self.book.add_metadata("DC", "source", book_info_html_page.url)
+        self.book.add_metadata(
+            None, "meta", "", {"name": "shamela2epub", "content": __version__}
+        )
         info_page = EpubHtml(
             title="بطاقة الكتاب",
             file_name="info.xhtml",
