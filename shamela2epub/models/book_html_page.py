@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from bs4 import Tag
+from bs4.element import PageElement
 
 from shamela2epub.misc.constants import BOOK_URL
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
@@ -24,6 +25,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         self.page_url = self.url.split("#")[0]
         self._chapters_by_page: Dict[str, str] = {}
         self._toc_chapters_levels: Dict[str, int] = {}
+        self.content = self.get_clean_page_content()
 
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
@@ -112,3 +114,25 @@ class BookHTMLPage(BookBaseHTMLPage):
             if parts
             else {}
         )
+
+    def get_clean_page_content(self) -> Tag:
+        """
+        Cleaned up page content
+        """
+        content = self.content
+        # Delete parent div class
+        del content["class"]
+        # Delete all elements classes
+        for element in filter(
+            lambda x: isinstance(x, Tag) and x.get("class", None),
+            content.recursiveChildGenerator(),
+        ):
+            del element["class"]
+        # Delete empty spans
+        for element in content.select("span"):
+            if not element.text:
+                element.decompose()
+        # Delete paragraph style
+        for element in content.select('p[style="font-size: 15px"]'):
+            del element["style"]
+        return content

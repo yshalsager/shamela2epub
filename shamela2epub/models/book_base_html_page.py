@@ -10,7 +10,4 @@ class BookBaseHTMLPage:
     def __init__(self, url: str):
         self.url = url
         self._html: BeautifulSoup = BeautifulSoup(get(self.url).content, "html.parser")
-
-    @property
-    def content(self) -> Tag:
-        return self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
+        self.content = self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)

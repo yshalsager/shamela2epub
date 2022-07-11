@@ -51,7 +51,6 @@ Options:
 
 ### Next
 
-- Clean html classes
 - Use class for text center
 - Add dependabot, funding and actions to the repo
 - Tag releases
