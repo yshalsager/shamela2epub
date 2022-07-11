@@ -36,11 +36,12 @@ Options:
 
 ## Features
 
-- Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) standard book.
+- Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) RTL standard book.
 - Automatically adds a page for book information.
 - Automatically generated table of contents with support for nested chapters.
 - Automatically adds book part and page number to each page's footer.
 - Sanitizes the book HTML from unnecessary elements and classes.
+- Converts inline CSS color styles to CSS classes.
 
 ## Known Issues
 
@@ -56,7 +57,6 @@ Options:
 
 ### Maybe
 
-- Maybe Use classes for colors
 - Maybe GUI
 - Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
   removing it from the TOC

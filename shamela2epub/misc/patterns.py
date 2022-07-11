@@ -7,3 +7,5 @@ BOOK_URL_PATTERN = re.compile(
         SHAMELA_DOMAIN
     )
 )
+
+CSS_STYLE_COLOR_PATTERN = re.compile(r'style="(color:#[\w\d]{6})"')

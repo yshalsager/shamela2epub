@@ -1,5 +1,7 @@
-from typing import Dict, List, Union
+import re
+from typing import Dict, List
 
+from bs4 import Tag
 from ebooklib.epub import (
     EpubBook,
     EpubHtml,
@@ -12,6 +14,7 @@ from ebooklib.epub import (
 
 from shamela2epub import __version__
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
+from shamela2epub.misc.patterns import CSS_STYLE_COLOR_PATTERN
 from shamela2epub.misc.utils import get_stylesheet
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
@@ -27,6 +30,8 @@ class EPUBBook:
         self.sections_map: Dict[str, Link] = {}
         self.parts_map: Dict[str, int] = {}
         self.default_css: EpubItem = EpubItem()
+        self._color_styles_map: Dict[str, int] = {}
+        self._last_color_id: int = 0
 
     def set_page_count(self, count: str) -> None:
         self.pages_count = count
@@ -76,6 +81,21 @@ class EPUBBook:
             self.sections.append(link)
             self.sections_map.update({i: link})
 
+    def replace_color_styles_with_class(self, html: Tag) -> str:
+        html_str = str(html)
+        matches = CSS_STYLE_COLOR_PATTERN.findall(html_str)
+        if not matches:
+            return html_str
+        for style in list(set(CSS_STYLE_COLOR_PATTERN.findall(html_str))):
+            color_class = self._color_styles_map.get(style, "")
+            if not color_class:
+                color_class = f"color-{self._last_color_id + 1}"
+                self._color_styles_map.update({style: color_class})
+                self._last_color_id += 1
+                self.default_css.content += f"\n.{color_class} {{ {style}; }}\n\n"
+            html_str = re.sub(f'style="{style}"', f'class="{color_class}"', html_str)
+        return html_str
+
     def add_page(
         self, book_html_page: BookHTMLPage, file_name: str = "", title: str = ""
     ) -> EpubHtml:
@@ -95,7 +115,7 @@ class EPUBBook:
             title=title,
             file_name=file_name or page_filename,
             lang="ar",
-            content=f"<html><body>{book_html_page.content}<hr>"
+            content=f"<html><body>{self.replace_color_styles_with_class(book_html_page.content)}<hr>"
             f'<div class="text-center">{footer}</div>'
             f"</body></html>",
         )
