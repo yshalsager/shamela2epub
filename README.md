@@ -1,12 +1,14 @@
 # shamela2epub
 
+![logo](shamela2epub/assets/books-duotone.svg)
+
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
 [![PayPal](https://img.shields.io/badge/PayPal-Donate-00457C?style=flat&labelColor=00457C&logo=PayPal&logoColor=white&link=https://www.paypal.me/yshalsager)](https://www.paypal.me/yshalsager)
 [![LiberaPay](https://img.shields.io/badge/Liberapay-Support-F6C915?style=flat&labelColor=F6C915&logo=Liberapay&logoColor=white&link=https://liberapay.com/yshalsager)](https://liberapay.com/yshalsager)
 
-A CLI tool to download a book on https://shamela.ws into an EPUB book.
+A CLI and GUI tool to download a book on https://shamela.ws into an EPUB book.
 
 ## Installation
 
@@ -20,9 +22,11 @@ pip install .
 
 ## Usage
 
+### Command-line Tool (CLI)
+
 ```bash
-python3 download URL
-# python3 download "https://shamela.ws/book/823"
+python3 -m shamela2epub download URL
+# python3 -m shamela2epub download "https://shamela.ws/book/823"
 
 python3 -m shamela2epub download --help
 Usage: python -m shamela2epub download [OPTIONS] URL
@@ -34,8 +38,23 @@ Options:
   --help             Show this message and exit.
 ```
 
+### Graphical User Interface (GUI)
+
+- If you installed the package from pypi, you can use the following command:
+
+```bash
+shamela2epubgui
+```
+
+- Otherwise, use normal python command:
+
+```bash
+python3 -m shamela2epub gui
+```
+
 ## Features
 
+- CLI and GUI!
 - Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) RTL standard book.
 - Automatically adds a page for book information.
 - Automatically generated table of contents with support for nested chapters.
@@ -52,11 +71,15 @@ Options:
 
 ### Next
 
+- Make the gui re-sizes dynamically
 - Add dependabot, funding and actions to the repo
 - Tag releases
 
 ### Maybe
 
-- Maybe GUI
 - Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
   removing it from the TOC
+
+## Thanks
+
+- GUI icons are made by the amazing [Phosphor Icons](https://phosphoricons.com/) (books - duotone - `#AB8B64`).

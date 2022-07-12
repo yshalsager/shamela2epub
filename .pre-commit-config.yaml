@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: system
         name: Requirements
-        entry: poetry export --format=requirements.txt --without-hashes --dev --output=requirements.txt
+        entry:  poetry export --format=requirements.txt --without-hashes --dev -E gui --output=pyinstaller/requirements.txt
         pass_filenames: false
         language: system
 

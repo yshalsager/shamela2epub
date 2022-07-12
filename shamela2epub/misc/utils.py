@@ -1,5 +1,7 @@
 from pathlib import Path
+from platform import system
 from re import Match
+from subprocess import Popen
 from typing import Dict, Optional
 
 from shamela2epub import WORK_DIR
@@ -29,3 +31,15 @@ def get_book_info_page_url(url: str) -> str:
 
 def get_stylesheet() -> str:
     return Path(WORK_DIR / "assets/styles.css").read_text()
+
+
+def browse_file_directory(filepath: Path) -> None:
+    """Browse a file parent directory in OS file explorer."""
+    if system() == "Windows":
+        from os import startfile  # type: ignore
+
+        startfile(filepath.parent)
+    elif system() == "Darwin":
+        Popen(["open", filepath.parent])
+    else:
+        Popen(["xdg-open", filepath.parent])
