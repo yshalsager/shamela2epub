@@ -2,6 +2,7 @@
 
 ![logo](shamela2epub/assets/books-duotone.svg)
 
+[![PyInstaller](https://github.com/yshalsager/shamela2epub/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/yshalsager/shamela2epub/actions/workflows/ci.yml)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 
@@ -9,6 +10,8 @@
 [![LiberaPay](https://img.shields.io/badge/Liberapay-Support-F6C915?style=flat&labelColor=F6C915&logo=Liberapay&logoColor=white&link=https://liberapay.com/yshalsager)](https://liberapay.com/yshalsager)
 
 A CLI and GUI tool to download a book on https://shamela.ws into an EPUB book.
+
+![gui](gui.png)
 
 ## Installation
 
@@ -71,7 +74,6 @@ python3 -m shamela2epub gui
 
 ### Next
 
-- Add Pyinstaller Actions to the repo
 - Tag releases
 
 ### Maybe

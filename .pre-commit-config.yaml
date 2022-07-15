@@ -1,11 +1,6 @@
 repos:
   - repo: local
     hooks:
-      - id: system
-        name: Requirements
-        entry:  poetry export --format=requirements.txt --without-hashes --dev -E gui --output=pyinstaller/requirements.txt
-        pass_filenames: false
-        language: system
 
       - id: isort
         name: isort
