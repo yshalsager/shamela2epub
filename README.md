@@ -71,7 +71,6 @@ python3 -m shamela2epub gui
 
 ### Next
 
-- Make the gui re-sizes dynamically
 - Add Pyinstaller Actions to the repo
 - Tag releases
 
