@@ -29,3 +29,13 @@ def download(url: str, output: str) -> None:
     logger.info("Saving the new book")
     output_book = downloader.save_book(output)
     logger.info(f"Done! You can find the book at: {output_book}")
+
+
+if __name__ == "__main__":
+
+    @click.group()
+    def cli() -> None:
+        pass
+
+    cli.add_command(download)
+    cli()

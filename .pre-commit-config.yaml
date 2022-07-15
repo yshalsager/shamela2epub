@@ -1,9 +1,15 @@
 repos:
   - repo: local
     hooks:
-      - id: system
-        name: Requirements
-        entry:  poetry export --format=requirements.txt --without-hashes --dev -E gui --output=pyinstaller/requirements.txt
+      - id: requirements_cli
+        name: Requirements CLI
+        entry: poetry export --format=requirements.txt --without-hashes --output=pyinstaller/requirements-cli.txt
+        pass_filenames: false
+        language: system
+
+      - id: requirements_gui
+        name: Requirements GUI
+        entry: poetry export --format=requirements.txt --without-hashes -E gui --output=pyinstaller/requirements-gui.txt
         pass_filenames: false
         language: system
 

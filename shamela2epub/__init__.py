@@ -1,5 +1,4 @@
 """ Module initialization"""
-import json
 import logging
 from importlib import metadata
 from logging.handlers import TimedRotatingFileHandler
@@ -8,7 +7,8 @@ from sys import stderr, stdout
 
 import toml
 
-PKG_DIR = Path(__package__).absolute()
+# Use __file__ so PyInstaller bundle can access files too
+PKG_DIR = Path(__file__).absolute().parent
 PARENT_DIR = PKG_DIR.parent
 
 # Set package version dynamically

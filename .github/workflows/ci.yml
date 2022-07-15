@@ -1,0 +1,84 @@
+name: Package Application with Pyinstaller
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '(deps') }}
+
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Package CLI Application for Windows
+        uses: yshalsager/pyinstaller-action-windows@main
+        with:
+          path: .
+          spec: pyinstaller/shamela2epub.spec
+          requirements: pyinstaller/requirements-cli.txt
+
+      - name: Package GUI Application for Windows
+        uses: yshalsager/pyinstaller-action-windows@main
+        with:
+          path: .
+          spec: pyinstaller/shamela2epubgui.spec
+          requirements: pyinstaller/requirements-gui.txt
+
+      - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
+        with:
+          name: shamela2epubgui.exe
+          path: dist/windows
+
+      - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
+        with:
+          name: shamela2epub.exe
+          path: dist/windows
+
+      - name: Package CLI Application for Linux
+        uses: yshalsager/pyinstaller-action-linux@main
+        with:
+          path: .
+          spec: pyinstaller/shamela2epub.spec
+          requirements: pyinstaller/requirements-cli.txt
+
+      - name: Package GUI Application for Linux
+        uses: yshalsager/pyinstaller-action-linux@main
+        with:
+          path: .
+          spec: pyinstaller/shamela2epubgui.spec
+          requirements: pyinstaller/requirements-guii.txt
+
+      - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
+        with:
+          name: shamela2epub
+          path: dist/linux
+
+      - uses: actions/upload-artifact@v2
+        if: github.actor != 'dependabot[bot]'
+        with:
+          name: shamela2epubgui
+          path: dist/linux
+
+      - name: Get datetime
+        id: datetime
+        run: echo ::set-output name=datetime::$(date +'%Y%m%d-%H%M%S')
+
+      - name: Release
+        if: github.actor != 'dependabot[bot]'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.datetime.outputs.datetime }}
+          name: ${{ steps.datetime.outputs.datetime }}
+          files: |
+            dist/windows/shamela2epub.exe
+            dist/linux/shamela2epub
+            dist/windows/shamela2epubgui.exe
+            dist/linux/shamela2epubgui

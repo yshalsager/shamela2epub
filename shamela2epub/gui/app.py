@@ -126,3 +126,7 @@ def gui() -> None:
     QFontDatabase.addApplicationFont(f"{PKG_DIR}/assets/NotoNaskhArabic-Regular.ttf")
     window.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    gui()
