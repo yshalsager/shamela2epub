@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
 )
 
-from shamela2epub import WORK_DIR
+from shamela2epub import PKG_DIR
 from shamela2epub.main import BookDownloader
 from shamela2epub.misc.utils import browse_file_directory
 
@@ -28,7 +28,7 @@ class App(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        uic.loadUi(f"{WORK_DIR}/gui/ui.ui", self)
+        uic.loadUi(f"{PKG_DIR}/gui/ui.ui", self)
         # self.setWindowIcon(QIcon(f"{WORK_DIR}/assets/books-duotone-512.png"))
         self.center()
         self.download.clicked.connect(self.run)
@@ -123,6 +123,6 @@ def gui() -> None:
 
     app = QApplication(sys.argv)
     window = App()
-    QFontDatabase.addApplicationFont(f"{WORK_DIR}/assets/NotoNaskhArabic-Regular.ttf")
+    QFontDatabase.addApplicationFont(f"{PKG_DIR}/assets/NotoNaskhArabic-Regular.ttf")
     window.show()
     sys.exit(app.exec_())

@@ -8,8 +8,8 @@ from sys import stderr, stdout
 
 import toml
 
-WORK_DIR = Path(__package__).absolute()
-PARENT_DIR = WORK_DIR.parent
+PKG_DIR = Path(__package__).absolute()
+PARENT_DIR = PKG_DIR.parent
 
 # Set package version dynamically
 try:

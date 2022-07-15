@@ -4,8 +4,8 @@ from re import Match
 from subprocess import Popen
 from typing import Dict, Optional
 
-from shamela2epub import WORK_DIR
-from shamela2epub.misc.constants import BOOK_URL, SHAMELA_DOMAIN
+from shamela2epub import PKG_DIR
+from shamela2epub.misc.constants import BOOK_RESOURCE, SHAMELA_DOMAIN
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
 
 
@@ -21,16 +21,16 @@ def get_info_from_url(url: str) -> Dict[str, str]:
 
 def get_book_first_page_url(url: str) -> str:
     info: Dict[str, str] = get_info_from_url(url)
-    return f"https://{SHAMELA_DOMAIN}/{BOOK_URL}/{info['bookID']}/1"
+    return f"https://{SHAMELA_DOMAIN}/{BOOK_RESOURCE}/{info['bookID']}/1"
 
 
 def get_book_info_page_url(url: str) -> str:
     info: Dict[str, str] = get_info_from_url(url)
-    return f"https://{SHAMELA_DOMAIN}/{BOOK_URL}/{info['bookID']}/"
+    return f"https://{SHAMELA_DOMAIN}/{BOOK_RESOURCE}/{info['bookID']}/"
 
 
 def get_stylesheet() -> str:
-    return Path(WORK_DIR / "assets/styles.css").read_text()
+    return Path(PKG_DIR / "assets/styles.css").read_text()
 
 
 def browse_file_directory(filepath: Path) -> None:

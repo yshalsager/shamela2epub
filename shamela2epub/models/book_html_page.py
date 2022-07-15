@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 from bs4 import Tag
 from bs4.element import PageElement
 
-from shamela2epub.misc.constants import BOOK_URL
+from shamela2epub.misc.constants import BOOK_RESOURCE
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
@@ -17,7 +17,7 @@ class BookHTMLPage(BookBaseHTMLPage):
     PAGE_PART_SELECTOR = f"{PAGE_PARTS_SELECTOR} button"
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
-    CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_URL}/']"
+    CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_RESOURCE}/']"
 
     def __init__(self, url: str):
         super().__init__(url)
