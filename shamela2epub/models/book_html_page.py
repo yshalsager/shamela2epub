@@ -1,7 +1,6 @@
 from typing import Any, Dict, List
 
 from bs4 import Tag
-from bs4.element import PageElement
 
 from shamela2epub.misc.constants import BOOK_RESOURCE
 from shamela2epub.misc.patterns import BOOK_URL_PATTERN
@@ -20,6 +19,7 @@ class BookHTMLPage(BookBaseHTMLPage):
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_RESOURCE}/']"
 
     def __init__(self, url: str):
+        """Book HTML page model constructor."""
         super().__init__(url)
         self._remove_copy_btn_from_html()
         self.page_url = self.url.split("#")[0]
@@ -116,9 +116,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         )
 
     def get_clean_page_content(self) -> Tag:
-        """
-        Cleaned up page content
-        """
+        """Get cleaned-up page content."""
         content = self.content
         # Delete parent div class
         del content["class"]

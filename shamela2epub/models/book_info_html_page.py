@@ -1,5 +1,3 @@
-from typing import Any
-
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
@@ -10,6 +8,7 @@ class BookInfoHTMLPage(BookBaseHTMLPage):
     BOOK_TITLE_SELECTOR = "h1 a"
 
     def __init__(self, url: str):
+        """Book Info Page model constructor."""
         self.url = url
         super().__init__(url)
         self._sanitize_html()

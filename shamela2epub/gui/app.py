@@ -1,6 +1,5 @@
 from functools import partial
 from pathlib import Path
-from typing import Optional
 
 import click
 from PyQt5 import uic
@@ -26,6 +25,7 @@ class App(QMainWindow):
     url_form: QLabel
 
     def __init__(self) -> None:
+        """GUI App constructor."""
         super().__init__()
 
         uic.loadUi(f"{PKG_DIR}/gui/ui.ui", self)
@@ -62,9 +62,7 @@ class App(QMainWindow):
         message_box.exec_()
 
     def choose_output_directory(self) -> str:
-        """
-        Opens select file Dialog
-        """
+        """Opens select file Dialog."""
         output_directory = QFileDialog().getExistingDirectory(
             self, "اختر مكان حفظ الكتاب"
         )
@@ -93,8 +91,8 @@ class App(QMainWindow):
         self.update_statusbar(
             f"بدء العمل على كتاب {downloader.book_info_page.title} لمؤلفه {downloader.book_info_page.author}"
         )
-        first_page_url = downloader.create_first_page()
-        self.update_statusbar(f"إنشاء الصفحة الأولى")
+        downloader.create_first_page()
+        self.update_statusbar("إنشاء الصفحة الأولى")
         for page in downloader.download():
             self.update_statusbar(f"إنشاء الصفحة {page}")
         self.update_statusbar("حفظ الكتاب")
@@ -103,9 +101,7 @@ class App(QMainWindow):
         self.download.setEnabled(True)
 
     def center(self) -> None:
-        """
-        Dynamically center the window in screen
-        """
+        """Dynamically center the window in screen."""
         # https://gist.github.com/saleph/163d73e0933044d0e2c4
         # geometry of the main window
         window = self.frameGeometry()

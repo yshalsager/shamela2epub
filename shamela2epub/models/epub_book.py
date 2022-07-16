@@ -22,6 +22,7 @@ from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 
 class EPUBBook:
     def __init__(self) -> None:
+        """EPUB Book model."""
         self.pages_count: str = ""
         self._zfill_length = 0
         self.book: EpubBook = EpubBook()

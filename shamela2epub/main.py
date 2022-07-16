@@ -1,6 +1,4 @@
-"""
-shamela2epub main
-"""
+"""shamela2epub main."""
 from pathlib import Path
 from typing import Iterator
 
@@ -20,6 +18,7 @@ class BookDownloader:
     book_html_page: BookHTMLPage
 
     def __init__(self, url: str) -> None:
+        """Book Downloader constructor."""
         self.url = url
         self.valid = is_valid_url(self.url)
         self.epub_book = EPUBBook()

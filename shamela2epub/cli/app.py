@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @click.argument("url", type=str)
 @click.option("-o", "--output", type=str, help="ePub output book custom name")
 def download(url: str, output: str) -> None:
-    """Download Shamela book form URL to ePub"""
+    """Download Shamela book form URL to ePub."""
     downloader = BookDownloader(url)
     if not downloader.valid:
         print("The URL you entered is invalid! Exiting...")

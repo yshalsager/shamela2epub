@@ -1,4 +1,4 @@
-""" Entry Point """
+"""Entry Point."""
 import click
 
 from shamela2epub.cli.app import download
