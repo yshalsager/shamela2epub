@@ -1,9 +1,19 @@
 [tool.poetry]
 name = "shamela2epub"
-version = "1.0.0"
+version = "1.0.0.post1"
 description = "A CLI and GUI tool to convert a book on https://shamela.ws to an EPUB book."
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
 license = "GPL-3.0-only"
+repository = "https://github.com/yshalsager/shamela2epub/"
+keywords = ["epub3", "shamela"]
+packages = [
+    { include = "shamela2epub" }
+]
+include = [
+    "README.md",
+    "pyproject.toml"
+]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
