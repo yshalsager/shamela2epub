@@ -3,7 +3,7 @@ pyinstaller-cli:
 		--clean -y \
 		--add-data="pyproject.toml:." \
 		--add-data="shamela2epub/assets/styles.css:./shamela2epub/assets/" \
-		--icon="shamela2epub/assets/books-duotone-128.png" \
+		--icon="shamela2epub/assets/books-duotone.ico" \
 		--windowed \
 		-n shamela2epub
 pyinstaller-gui:
@@ -12,7 +12,7 @@ pyinstaller-gui:
 		--add-data="pyproject.toml:." \
 		--add-data="shamela2epub/assets:./shamela2epub/assets" \
 		--add-data="shamela2epub/gui/ui.ui:./shamela2epub/gui/" \
-		--icon="shamela2epub/assets/books-duotone-128.png" \
+		--icon="shamela2epub/assets/books-duotone.ico" \
 		--windowed \
 		--hidden-import PyQt5.sip \
 		-n shamela2epubgui
