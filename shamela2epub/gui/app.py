@@ -115,6 +115,7 @@ class App(QMainWindow):
 
 @click.command()
 def gui() -> None:
+    """Run Shamela2Epub GUI."""
     import sys
 
     app = QApplication(sys.argv)

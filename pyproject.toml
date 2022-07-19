@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shamela2epub"
-version = "1.0.0.post1"
+version = "1.0.1"
 description = "A CLI and GUI tool to convert a book on https://shamela.ws to an EPUB book."
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
 license = "GPL-3.0-only"
@@ -34,7 +34,8 @@ types-click = "^7.1.8"
 pyinstaller = "^5.2"
 
 [tool.poetry.scripts]
-shamela2epubgui = "shamela2epub.gui:gui"
+shamela2epub = "shamela2epub.__main__:main"
+shamela2epubgui = "shamela2epub.gui.app:gui"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

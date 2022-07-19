@@ -10,7 +10,11 @@ def click_cli() -> None:
     pass
 
 
-if __name__ == "__main__":
+def main() -> None:
     click_cli.add_command(download)
     click_cli.add_command(gui)
     click_cli()
+
+
+if __name__ == "__main__":
+    main()
