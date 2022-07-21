@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from bs4 import Tag
 from ebooklib.epub import (
@@ -33,6 +33,7 @@ class EPUBBook:
         self.default_css: EpubItem = EpubItem()
         self._color_styles_map: Dict[str, int] = {}
         self._last_color_id: int = 0
+        self._pages_map: Dict[int, int] = {}
 
     def set_page_count(self, count: str) -> None:
         self.pages_count = count
@@ -97,6 +98,22 @@ class EPUBBook:
             html_str = re.sub(f'style="{style}"', f'class="{color_class}"', html_str)
         return html_str
 
+    def get_book_page_number(self, book_html_page: BookHTMLPage) -> str:
+        """
+        Get the correct page number, which will be in page file name
+        """
+        html_page_number: int = int(book_html_page.current_page)
+        book_page_count: Optional[int] = self._pages_map.get(html_page_number)
+        current_page = None
+        if book_page_count:
+            new_page_count = book_page_count + 1
+            current_page = new_page_count
+            self._pages_map[html_page_number] = new_page_count
+            return f"{str(html_page_number).zfill(self._zfill_length)}_{current_page}"
+        current_page = html_page_number
+        self._pages_map[html_page_number] = 1
+        return str(current_page).zfill(self._zfill_length)
+
     def add_page(
         self, book_html_page: BookHTMLPage, file_name: str = "", title: str = ""
     ) -> EpubHtml:
@@ -106,7 +123,7 @@ class EPUBBook:
         part = book_html_page.part
         page_filename = (
             f"page{'_' if part else ''}{self.parts_map[part] if self.parts_map else ''}_"
-            f"{book_html_page.current_page.zfill(self._zfill_length)}.xhtml"
+            f"{self.get_book_page_number(book_html_page)}.xhtml"
         )
         footer = ""
         if part:
