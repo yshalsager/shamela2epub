@@ -23,53 +23,53 @@ from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 class EPUBBook:
     def __init__(self) -> None:
         """EPUB Book model."""
-        self.pages_count: str = ""
+        self._pages_count: str = ""
         self._zfill_length = 0
-        self.book: EpubBook = EpubBook()
-        self.pages: List[EpubHtml] = []
-        self.sections: List[Link] = []
-        self.sections_map: Dict[str, Link] = {}
-        self.parts_map: Dict[str, int] = {}
-        self.default_css: EpubItem = EpubItem()
+        self._book: EpubBook = EpubBook()
+        self._pages: List[EpubHtml] = []
+        self._sections: List[Link] = []
+        self._sections_map: Dict[str, Link] = {}
+        self._parts_map: Dict[str, int] = {}
+        self._default_css: EpubItem = EpubItem()
         self._color_styles_map: Dict[str, int] = {}
         self._last_color_id: int = 0
         self._pages_map: Dict[int, int] = {}
 
     def set_page_count(self, count: str) -> None:
-        self.pages_count = count
+        self._pages_count = count
         self._zfill_length = len(count) + 1
 
     def set_parts_map(self, parts_map: Dict[str, int]) -> None:
-        self.parts_map = parts_map
+        self._parts_map = parts_map
 
     def init(self) -> None:
-        self.book.set_language("ar")
-        self.book.set_direction("rtl")
-        self.book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
-        self.book.add_metadata(
+        self._book.set_language("ar")
+        self._book.set_direction("rtl")
+        self._book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
+        self._book.add_metadata(
             None, "meta", "", {"name": "shamela2epub", "content": __version__}
         )
-        self.default_css = EpubItem(
+        self._default_css = EpubItem(
             uid="style_default",
             file_name="style/styles.css",
             media_type="text/css",
             content=get_stylesheet(),
         )
-        self.book.add_item(self.default_css)
+        self._book.add_item(self._default_css)
 
     def create_info_page(self, book_info_html_page: BookInfoHTMLPage) -> None:
-        self.book.set_title(book_info_html_page.title)
-        self.book.add_author(book_info_html_page.author)
-        self.book.add_metadata("DC", "source", book_info_html_page.url)
+        self._book.set_title(book_info_html_page.title)
+        self._book.add_author(book_info_html_page.author)
+        self._book.add_metadata("DC", "source", book_info_html_page.url)
         info_page = EpubHtml(
             title="بطاقة الكتاب",
             file_name="info.xhtml",
             lang="ar",
             content=f"<html><body>{book_info_html_page.content}</body></html>",
         )
-        info_page.add_item(self.default_css)
-        self.book.add_item(info_page)
-        self.pages.append(info_page)
+        info_page.add_item(self._default_css)
+        self._book.add_item(info_page)
+        self._pages.append(info_page)
 
     def add_chapter(
         self, chapters_in_page: Dict, new_page: EpubHtml, page_filename: str
@@ -80,8 +80,8 @@ class EPUBBook:
                 i,
                 page_filename.replace(".xhtml", ""),
             )
-            self.sections.append(link)
-            self.sections_map.update({i: link})
+            self._sections.append(link)
+            self._sections_map.update({i: link})
 
     def replace_color_styles_with_class(self, html: Tag) -> str:
         html_str = str(html)
@@ -94,7 +94,7 @@ class EPUBBook:
                 color_class = f"color-{self._last_color_id + 1}"
                 self._color_styles_map.update({style: color_class})
                 self._last_color_id += 1
-                self.default_css.content += f"\n.{color_class} {{ {style}; }}\n\n"
+                self._default_css.content += f"\n.{color_class} {{ {style}; }}\n\n"
             html_str = re.sub(f'style="{style}"', f'class="{color_class}"', html_str)
         return html_str
 
@@ -122,7 +122,7 @@ class EPUBBook:
             title = chapters_in_page[0]
         part = book_html_page.part
         page_filename = (
-            f"page{'_' if part else ''}{self.parts_map[part] if self.parts_map else ''}_"
+            f"page{'_' if part else ''}{self._parts_map[part] if self._parts_map else ''}_"
             f"{self.get_book_page_number(book_html_page)}.xhtml"
         )
         footer = ""
@@ -137,9 +137,9 @@ class EPUBBook:
             f'<div class="text-center">{footer}</div>'
             f"</body></html>",
         )
-        new_page.add_item(self.default_css)
-        self.book.add_item(new_page)
-        self.pages.append(new_page)
+        new_page.add_item(self._default_css)
+        self._book.add_item(new_page)
+        self._pages.append(new_page)
         if chapters_in_page:
             self.add_chapter(chapters_in_page, new_page, page_filename)
         return new_page
@@ -151,18 +151,22 @@ class EPUBBook:
             if isinstance(element, list):
                 self._update_toc_list(element)
             else:
-                toc[index] = self.sections_map.get(element, None)
+                toc[index] = self._sections_map.get(element, None)
 
     def generate_toc(self, toc_list: List) -> None:
         self._update_toc_list(toc_list)
         toc_list.insert(0, Link("nav.xhtml", "فهرس الموضوعات", "nav"))
         toc_list.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
-        self.book.toc = toc_list
-        self.book.add_item(EpubNcx())
+        self._book.toc = toc_list
+        self._book.add_item(EpubNcx())
         nav = EpubNav()
-        nav.add_item(self.default_css)
-        self.book.add_item(nav)
-        self.book.spine = [self.pages[0], "nav", *self.pages[1:]]  # [info, nav, rest]
+        nav.add_item(self._default_css)
+        self._book.add_item(nav)
+        self._book.spine = [
+            self._pages[0],
+            "nav",
+            *self._pages[1:],
+        ]  # [info, nav, rest]
 
     def save_book(self, book_name: str) -> None:
-        write_epub(book_name, self.book)
+        write_epub(book_name, self._book)

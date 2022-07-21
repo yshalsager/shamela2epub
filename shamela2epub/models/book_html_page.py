@@ -135,3 +135,6 @@ class BookHTMLPage(BookBaseHTMLPage):
         for element in content.select('p[style="font-size: 15px"]'):
             del element["style"]
         return content
+
+    def __repr__(self) -> str:
+        return f"<BookHTMLPage(url={self.url})>"
