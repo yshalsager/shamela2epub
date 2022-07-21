@@ -1,6 +1,9 @@
 # shamela2epub
 
-> A CLI and GUI tool to download a book on https://shamela.ws into an EPUB book.
+> A CLI and GUI tool to download a book on [Shamela Library Website](https://shamela.ws) into an EPUB book.
+
+[![en](https://img.shields.io/badge/README-English-AB8B64.svg)](README.md)
+[![ara](https://img.shields.io/badge/README-Arabic-AB8B64.svg)](README.ar.md)
 
 ![logo](shamela2epub/assets/books-duotone.svg)
 
@@ -97,7 +100,7 @@ python3 -m shamela2epub gui
 ### Maybe
 
 *   Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
-    removing it from the TOC
+    removing it from the TOC.
 
 ## Acknowledgments
 
