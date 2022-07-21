@@ -5,7 +5,7 @@ description = "A CLI and GUI tool to convert a book on https://shamela.ws to an 
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
 license = "GPL-3.0-only"
 repository = "https://github.com/yshalsager/shamela2epub/"
-keywords = ["epub3", "shamela"]
+keywords = ["epub3", "shamela", "book", "epub", "islamic"]
 packages = [
     { include = "shamela2epub" }
 ]
