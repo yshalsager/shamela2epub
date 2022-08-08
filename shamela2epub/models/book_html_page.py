@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, List
 
 from bs4 import Tag
@@ -26,6 +27,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         self._chapters_by_page: Dict[str, str] = {}
         self._toc_chapters_levels: Dict[str, int] = {}
         self.content = self.get_clean_page_content()
+        # self.hamesh_items = self.get_hamesh_items()
 
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
@@ -125,7 +127,7 @@ class BookHTMLPage(BookBaseHTMLPage):
             lambda x: isinstance(x, Tag) and x.get("class", None),
             content.recursiveChildGenerator(),
         ):
-            if element["class"] != "text-center":
+            if not any([c for c in element["class"] if c in ["text-center", "hamesh"]]):
                 del element["class"]
         # Delete empty spans
         for element in content.select("span"):
@@ -135,6 +137,18 @@ class BookHTMLPage(BookBaseHTMLPage):
         for element in content.select('p[style="font-size: 15px"]'):
             del element["style"]
         return content
+
+    def get_hamesh_items(self) -> List[str]:
+        hamesh_items: List[str] = []
+        hamesh = self.content.select_one(".hamesh")
+        if not hamesh:
+            return hamesh_items
+        for hamesh_line in hamesh.get_text("\n").splitlines():
+            # Search for lines starts with Arabic numbers followed by space
+            match = re.match(r"^(\([\u0660-\u0669]+\)) ", hamesh_line)
+            if match:
+                hamesh_items.append(match.group(1))
+        return hamesh_items
 
     def __repr__(self) -> str:
         return f"<BookHTMLPage(url={self.url})>"
