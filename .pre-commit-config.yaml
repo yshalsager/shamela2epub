@@ -1,29 +1,35 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: check-builtin-literals
+      - id: trailing-whitespace
+        exclude_types:
+          - "markdown"
+      - id: end-of-file-fixer
+      - id: check-toml
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: requirements-txt-fixer
+
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+
   - repo: local
     hooks:
-
-      - id: isort
-        name: isort
-        stages: [ commit ]
-        language: system
-        entry: poetry run isort
-        types: [ python ]
-
-      - id: black
-        name: black
-        stages: [ commit ]
-        language: system
-        entry: poetry run black
-        types: [ python ]
-
-      - id: flake8
-        name: flake8
-        stages: [ commit ]
-        language: system
-        entry: poetry run flake8
-        types: [ python ]
-        exclude: setup.py
-
       - id: mypy
         name: mypy
         stages: [ commit ]
@@ -31,4 +37,3 @@ repos:
         entry: poetry run mypy
         types: [ python ]
         pass_filenames: false
-
