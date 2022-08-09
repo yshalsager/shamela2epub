@@ -85,6 +85,7 @@ python3 -m shamela2epub gui
 *   Automatically adds book part and page number to each page's footer.
 *   Sanitizes the book HTML from unnecessary elements and classes.
 *   Converts inline CSS color styles to CSS classes.
+*   Inline footnotes for easier navigation, click any footnote, and it will appear in a popup instead of having all footnotes in page footer.
 
 ## Known Issues
 
@@ -101,9 +102,6 @@ python3 -m shamela2epub gui
 
 *   Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
     removing it from the TOC.
-*   Add proper footnotes support by replacing their `span` tags with `a` tag with `id` of its number
-    and `epub:type="noteref"` that has sup tag with item number. Then update hamesh
-    with `<aside id="n1" epub:type="footnote">note<aside>`.
 
 ## Acknowledgments
 

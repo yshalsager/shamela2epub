@@ -2,6 +2,26 @@
     direction: rtl;
 }
 
-.text-center,  h2 {
+.text-center, h2 {
     text-align: center;
+}
+
+.hamesh {
+    font-size: smaller;
+}
+
+/* footnote */
+.fn {
+    font-size: x-small;
+    vertical-align: super;
+    color: inherit;
+}
+
+/* no underline */
+.nu {
+    text-decoration: none;
+}
+
+.hamesh .nu {
+    color: #008000;
 }

@@ -1,10 +1,16 @@
 import re
 from typing import Any, Dict, List
 
-from bs4 import Tag
+from bs4 import BeautifulSoup, Tag
 
 from shamela2epub.misc.constants import BOOK_RESOURCE
-from shamela2epub.misc.patterns import BOOK_URL_PATTERN
+from shamela2epub.misc.patterns import (
+    ARABIC_NUMBER_BETWEEN_BRACKETS_PATTERN,
+    ARABIC_NUMBER_BETWEEN_CURLY_BRACES_PATTERN,
+    BOOK_URL_PATTERN,
+    HAMESH_CONTINUATION_PATTERN,
+    HAMESH_PATTERN,
+)
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
@@ -18,6 +24,7 @@ class BookHTMLPage(BookBaseHTMLPage):
     NEXT_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a"
     LAST_PAGE_SELECTOR = f"{PAGE_NUMBER_SELECTOR} + a + a"
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_RESOURCE}/']"
+    _previous_page_hamesh = ""
 
     def __init__(self, url: str):
         """Book HTML page model constructor."""
@@ -27,7 +34,8 @@ class BookHTMLPage(BookBaseHTMLPage):
         self._chapters_by_page: Dict[str, str] = {}
         self._toc_chapters_levels: Dict[str, int] = {}
         self.content = self.get_clean_page_content()
-        # self.hamesh_items = self.get_hamesh_items()
+        self.hamesh_items: Dict[str, Tag] = self.get_hamesh_items()
+        self._update_hamesh()
 
     def _remove_copy_btn_from_html(self) -> None:
         for btn in self._html.select(self.COPY_BTN_SELECTOR):
@@ -138,17 +146,116 @@ class BookHTMLPage(BookBaseHTMLPage):
             del element["style"]
         return content
 
-    def get_hamesh_items(self) -> List[str]:
-        hamesh_items: List[str] = []
+    def get_hamesh_items(self) -> Dict[str, Tag]:
+        hamesh_items: Dict[str, Tag] = {}
         hamesh = self.content.select_one(".hamesh")
         if not hamesh:
             return hamesh_items
-        for hamesh_line in hamesh.get_text("\n").splitlines():
-            # Search for lines starts with Arabic numbers followed by space
-            match = re.match(r"^(\([\u0660-\u0669]+\)) ", hamesh_line)
-            if match:
-                hamesh_items.append(match.group(1))
+        hamesh_counter = 0
+        current_hamesh = ""
+        hamesh_continuation = HAMESH_CONTINUATION_PATTERN.search(str(hamesh))
+        if hamesh_continuation:
+            type(self)._previous_page_hamesh = (
+                hamesh_continuation.group("continuation")
+                if not type(self)._previous_page_hamesh
+                else f"{type(self)._previous_page_hamesh}\n{hamesh_continuation.group('continuation')}"
+            )
+        else:
+            if not type(self)._previous_page_hamesh:
+                type(self)._previous_page_hamesh = ""
+        for match in HAMESH_PATTERN.finditer(str(hamesh)):
+            hamesh_counter += 1
+            current_hamesh = match.group("number").strip()
+            hamesh_line = match.group("content").strip()
+            #  <aside id="fn1" epub:type="footnote">
+            #  <p><a href="#fnref1" title="footnote 1">[1]</a> Text in popup</p>
+            #  </aside>
+            new_footnote = Tag(
+                builder=hamesh.builder,
+                name="aside",
+                attrs={"id": f"fn{hamesh_counter}", "epub:type": "footnote"},
+            )
+            new_footnote_p = Tag(builder=hamesh.builder, name="p")
+            new_footnote_a = Tag(
+                builder=hamesh.builder,
+                name="a",
+                attrs={
+                    "href": f"#fnref{hamesh_counter}",
+                    # "title": f"هامش {hamesh_counter}",
+                    "class": "nu",
+                },
+            )
+            new_footnote_a.string = current_hamesh
+            new_footnote.append(new_footnote_p)
+            if type(self)._previous_page_hamesh:
+                new_footnote_p.append(
+                    BeautifulSoup(
+                        type(self)._previous_page_hamesh.replace("\n", "<br>"),
+                        "html.parser",
+                    )
+                )
+                new_footnote_p.append(Tag(name="br"))
+                new_footnote_p.append(new_footnote_a)
+                new_footnote_p.append(" ")
+                new_footnote_p.append(BeautifulSoup(hamesh_line.strip(), "html.parser"))
+                type(self)._previous_page_hamesh = ""
+            else:
+                new_footnote_p.append(new_footnote_a)
+                new_footnote_p.append(" ")
+                new_footnote_p.append(BeautifulSoup(hamesh_line.strip(), "html.parser"))
+            hamesh_items.update({current_hamesh: new_footnote})
         return hamesh_items
+
+    def _update_hamesh(self) -> None:
+        footnote_count = 1
+        hamesh = self.content.select_one(".hamesh")
+        if not hamesh:
+            return
+        new_hamesh = Tag(builder=hamesh.builder, name="div", attrs={"class": "hamesh"})
+        parent = self.content.select_one("div")
+        p_elements = self.content.select("p:not(.hamesh)")
+        for p in p_elements:
+            matches = ARABIC_NUMBER_BETWEEN_BRACKETS_PATTERN.finditer(str(p))
+            for match in matches:
+                number = match.group("number")
+                if not self.hamesh_items.get(number, ""):
+                    continue
+                aya_match = ARABIC_NUMBER_BETWEEN_CURLY_BRACES_PATTERN.search(str(p))
+                if (
+                    aya_match
+                    and number in aya_match.group()
+                    # number in inside aya
+                    and match.start("number") > aya_match.start()
+                ):
+                    continue
+                footnote_link: Tag = Tag(
+                    builder=p.builder,
+                    name="a",
+                    attrs={
+                        "href": f"#fn{footnote_count}",
+                        "epub:type": "noteref",
+                        "role": "doc-noteref",
+                        "id": f"fnref{footnote_count}",
+                        # "title": f"هامش {footnote_count}",
+                        "class": "fn nu",
+                    },
+                )
+                footnote_link.string = number
+                # new_p_content = (
+                #     str(p)[len("<p>") : match.start()]
+                #     + str(footnote_link)
+                #     + str(p)[match.start() + len(match.group()) : 0 - len("</p>")]
+                # )
+                # TODO: Find a better way to replace number with its a element,
+                #  since replacing only the first occurrence might not be the best soluion
+                new_p_content = str(p).replace(number, str(footnote_link), 1)
+                new_p = Tag(builder=p.builder, name="p", parent=parent)
+                new_p.append(BeautifulSoup(new_p_content, "html.parser"))
+                p.replace_with(new_p)
+                p = new_p
+                footnote_count += 1
+                new_hamesh.append(self.hamesh_items[number])
+        hamesh.replace_with(new_hamesh)
 
     def __repr__(self) -> str:
         return f"<BookHTMLPage(url={self.url})>"

@@ -133,7 +133,7 @@ class EPUBBook:
             title=title,
             file_name=file_name or page_filename,
             lang="ar",
-            content=f"<html><body>{self.replace_color_styles_with_class(book_html_page.content)}<hr>"
+            content=f"<html><body>{self.replace_color_styles_with_class(book_html_page.content)}"
             f'<div class="text-center">{footer}</div>'
             f"</body></html>",
         )
