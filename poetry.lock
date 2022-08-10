@@ -444,6 +444,17 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "pyqtdarktheme"
+version = "1.1.0"
+description = "Flat dark theme for PySide and PyQt."
+category = "main"
+optional = false
+python-versions = ">=3.7,<3.11"
+
+[package.extras]
+docs = ["sphinx-panels (>=0.6.0,<0.7.0)", "pydata-sphinx-theme (>=0.7.2,<0.9.0)"]
+
+[[package]]
 name = "pywin32-ctypes"
 version = "0.2.0"
 description = ""
@@ -594,7 +605,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "caf426b22f78d9d1976003108aaf936eee6b1d82b6062c34718e52cb0cc79c72"
+content-hash = "d68484d6088255b53a564e29af49de2ffc666b16d0dfe698383224340ccf0905"
 
 [metadata.files]
 altgraph = [
@@ -906,6 +917,10 @@ pyqt5-sip = [
     {file = "PyQt5_sip-12.11.0-cp39-cp39-win32.whl", hash = "sha256:686071be054e5be6ca5aaaef7960931d4ba917277e839e2e978c7cbe3f43bb6e"},
     {file = "PyQt5_sip-12.11.0-cp39-cp39-win_amd64.whl", hash = "sha256:42320e7a94b1085ed85d49794ed4ccfe86f1cae80b44a894db908a8aba2bc60e"},
     {file = "PyQt5_sip-12.11.0.tar.gz", hash = "sha256:b4710fd85b57edef716cc55fae45bfd5bfac6fc7ba91036f1dcc3f331ca0eb39"},
+]
+pyqtdarktheme = [
+    {file = "PyQtDarkTheme-1.1.0-py3-none-any.whl", hash = "sha256:06825c71a9cd60581b753cffcf5414342185af22f66020fd60f4f60dafa7657e"},
+    {file = "PyQtDarkTheme-1.1.0.tar.gz", hash = "sha256:1987e5231ed5d773f7eaa906ea27f9de387a0ce2d2effe8ee569e2ecab452c68"},
 ]
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},

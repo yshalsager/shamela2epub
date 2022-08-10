@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import click
+import qdarktheme
 from PyQt5 import uic
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5.QtGui import QFontDatabase
@@ -161,6 +162,7 @@ def gui() -> None:
     app = QApplication(sys.argv)
     window = App()
     QFontDatabase.addApplicationFont(f"{PKG_DIR}/assets/NotoNaskhArabic-Regular.ttf")
+    app.setStyleSheet(qdarktheme.load_stylesheet())
     window.show()
     sys.exit(app.exec_())
 
