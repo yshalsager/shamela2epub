@@ -1,8 +1,10 @@
 from functools import partial
 from pathlib import Path
+from typing import Optional
 
 import click
 from PyQt5 import uic
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5.QtGui import QFontDatabase
 from PyQt5.QtWidgets import (
     QApplication,
@@ -19,6 +21,32 @@ from shamela2epub.main import BookDownloader
 from shamela2epub.misc.utils import browse_file_directory
 
 
+class Worker(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(str)
+    downloaded = pyqtSignal(Path)
+
+    def __init__(self, downloader: BookDownloader, output: str) -> None:
+        self.downloader: BookDownloader = downloader
+        self.output: str = output
+        super().__init__()
+
+    def run(self) -> None:
+        """Process the book."""
+        self.downloader.create_info_page()
+        self.progress.emit(
+            f"بدء العمل على كتاب {self.downloader.book_info_page.title} لمؤلفه {self.downloader.book_info_page.author}"
+        )
+        self.downloader.create_first_page()
+        self.progress.emit("إنشاء الصفحة الأولى")
+        for page in self.downloader.download():
+            self.progress.emit(f"إنشاء الصفحة {page}")
+        self.progress.emit("حفظ الكتاب")
+        output_book = self.downloader.save_book(self.output)
+        self.downloaded.emit(output_book)
+        self.finished.emit()
+
+
 class App(QMainWindow):
     download: QPushButton
     statusbar: QLabel
@@ -27,6 +55,8 @@ class App(QMainWindow):
     def __init__(self) -> None:
         """GUI App constructor."""
         super().__init__()
+        self.thread: QThread = QThread()  # type:ignore
+        self.worker: Optional[Worker] = None
 
         uic.loadUi(f"{PKG_DIR}/gui/ui.ui", self)
         # self.setWindowIcon(QIcon(f"{WORK_DIR}/assets/books-duotone-512.png"))
@@ -71,8 +101,12 @@ class App(QMainWindow):
             return ""
         return output_directory
 
+    def report_progress(self, progress: str) -> None:
+        self.update_statusbar(progress)
+
     def run(self) -> None:
         self.download.setDisabled(True)
+        self.url_form.setDisabled(True)
         if not self.url_form.text():
             self.show_error_message("لم تدخل رابط الكتاب بعد!")
             self.download.setEnabled(True)
@@ -87,18 +121,23 @@ class App(QMainWindow):
             self.download.setEnabled(True)
             return
         self.update_statusbar("تحليل معلومات الرابط")
-        downloader.create_info_page()
-        self.update_statusbar(
-            f"بدء العمل على كتاب {downloader.book_info_page.title} لمؤلفه {downloader.book_info_page.author}"
-        )
-        downloader.create_first_page()
-        self.update_statusbar("إنشاء الصفحة الأولى")
-        for page in downloader.download():
-            self.update_statusbar(f"إنشاء الصفحة {page}")
-        self.update_statusbar("حفظ الكتاب")
-        output_book = downloader.save_book(output)
-        self.on_process_complete(output_book)
-        self.download.setEnabled(True)
+        # Create a worker object
+        self.worker = Worker(downloader, output)
+        # Move worker to the thread
+        self.worker.moveToThread(self.thread)
+        # Connect signals and slots
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.worker.progress.connect(self.report_progress)
+        self.worker.downloaded.connect(self.on_process_complete)
+        # Start the thread
+        self.thread.start()
+        # Final resets
+        self.thread.finished.connect(lambda: self.download.setEnabled(True))
+        self.thread.finished.connect(lambda: self.url_form.setEnabled(True))
+        self.thread.finished.connect(lambda: self.update_statusbar("اكتمل التحميل!"))
 
     def center(self) -> None:
         """Dynamically center the window in screen."""
