@@ -7,6 +7,7 @@
 
 ![logo](shamela2epub/assets/books-duotone.svg)
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/901b1123964c4468a88b0cfcde9147fe)](https://www.codacy.com/gh/yshalsager/shamela2epub/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yshalsager/shamela2epub&amp;utm_campaign=Badge_Grade)
 [![PyPI version](https://badge.fury.io/py/shamela2epub.svg)](https://pypi.org/project/shamela2epub/)
 [![PyPI Downloads](https://static.pepy.tech/personalized-badge/shamela2epub?period=total\&units=international_system\&left_color=grey\&right_color=blue\&left_text=Total%20Downloads%20\(PyPI\))](https://pepy.tech/project/shamela2epub)
 
