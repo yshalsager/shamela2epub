@@ -137,6 +137,7 @@ class App(QMainWindow):
         # Final resets
         self.thread.finished.connect(lambda: self.download.setEnabled(True))
         self.thread.finished.connect(lambda: self.url_form.setEnabled(True))
+        self.thread.finished.connect(lambda: self.url_form.setText(""))
         self.thread.finished.connect(lambda: self.update_statusbar("اكتمل التحميل!"))
 
     def center(self) -> None:
