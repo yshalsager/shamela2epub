@@ -15,7 +15,7 @@ pyqt5-sip==12.11.0; python_version >= "3.7"
 pyqtdarktheme==1.1.0; python_version >= "3.7" and python_version < "3.11"
 rfc3986==1.5.0; python_version >= "3.7"
 six==1.16.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
-sniffio==1.2.0; python_full_version >= "3.6.2" and python_version >= "3.7"
+sniffio==1.3.0; python_full_version >= "3.6.2" and python_version >= "3.7"
 soupsieve==2.3.2.post1; python_version >= "3.6" and python_full_version >= "3.6.0"
 toml==0.10.2; (python_version >= "2.6" and python_full_version < "3.0.0") or (python_full_version >= "3.3.0")
 typing-extensions==4.3.0; python_version >= "3.7"
