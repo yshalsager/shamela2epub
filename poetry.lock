@@ -449,14 +449,11 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pyqtdarktheme"
-version = "1.1.0"
+version = "1.1.1"
 description = "Flat dark theme for PySide and PyQt."
 category = "main"
 optional = false
-python-versions = ">=3.7,<3.11"
-
-[package.extras]
-docs = ["pydata-sphinx-theme (>=0.7.2,<0.9.0)", "sphinx-panels (>=0.6.0,<0.7.0)"]
+python-versions = ">=3.7,<3.12"
 
 [[package]]
 name = "pywin32-ctypes"
@@ -920,6 +917,10 @@ pyqt5-sip = [
     {file = "PyQt5_sip-12.11.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:4031547dfb679be309094bfa79254f5badc5ddbe66b9ad38e319d84a7d612443"},
     {file = "PyQt5_sip-12.11.0-cp310-cp310-win32.whl", hash = "sha256:ad21ca0ee8cae2a41b61fc04949dccfab6fe008749627d94e8c7078cb7a73af1"},
     {file = "PyQt5_sip-12.11.0-cp310-cp310-win_amd64.whl", hash = "sha256:3126c84568ab341c12e46ded2230f62a9a78752a70fdab13713f89a71cd44f73"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:bd733667098cac70e89279d9c239106d543fb480def62a44e6366ccb8f68510b"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:ec1d8ce50be76c5c1d1c86c6dc0ccacc2446172dde98b663a17871f532f9bd44"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-win32.whl", hash = "sha256:43dfe6dd409e713edeb67019b85419a7a0dc9923bfc451d6cf3778471c122532"},
+    {file = "PyQt5_sip-12.11.0-cp311-cp311-win_amd64.whl", hash = "sha256:afa4ffffc54e306669bf2b66ea37abbc56c5cdda4f3f474d20324e3634302b12"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:0f77655c62ec91d47c2c99143f248624d44dd2d8a12d016e7c020508ad418aca"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ec5e9ef78852e1f96f86d7e15c9215878422b83dde36d44f1539a3062942f19c"},
     {file = "PyQt5_sip-12.11.0-cp37-cp37m-win32.whl", hash = "sha256:d12b81c3a08abf7657a2ebc7d3649852a1f327eb2146ebadf45930486d32e920"},
@@ -935,8 +936,8 @@ pyqt5-sip = [
     {file = "PyQt5_sip-12.11.0.tar.gz", hash = "sha256:b4710fd85b57edef716cc55fae45bfd5bfac6fc7ba91036f1dcc3f331ca0eb39"},
 ]
 pyqtdarktheme = [
-    {file = "PyQtDarkTheme-1.1.0-py3-none-any.whl", hash = "sha256:06825c71a9cd60581b753cffcf5414342185af22f66020fd60f4f60dafa7657e"},
-    {file = "PyQtDarkTheme-1.1.0.tar.gz", hash = "sha256:1987e5231ed5d773f7eaa906ea27f9de387a0ce2d2effe8ee569e2ecab452c68"},
+    {file = "pyqtdarktheme-1.1.1-py3-none-any.whl", hash = "sha256:78710a6eabd9e86ff6ac26fc382ae51921f5e55b397be3d834321359e7988524"},
+    {file = "pyqtdarktheme-1.1.1.tar.gz", hash = "sha256:dce013ff6b2de8f7b5814f17bffb59a2690dda4df69cf0085c5d09dcd5452af4"},
 ]
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
