@@ -35,7 +35,7 @@ flake8 = "^5.0.4"
 types-toml = "^0.10.8"
 types-click = "^7.1.8"
 pyinstaller = "^5.6"
-pycln = "^2.1.1"
+pycln = "^2.1.2"
 
 [tool.poetry.scripts]
 shamela2epub = "shamela2epub.__main__:main"
