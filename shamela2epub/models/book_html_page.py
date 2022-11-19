@@ -127,6 +127,8 @@ class BookHTMLPage(BookBaseHTMLPage):
     def get_clean_page_content(self) -> Tag:
         """Get cleaned-up page content."""
         content = self.content
+        if not content:
+            return content
         # Delete parent div class
         del content["class"]
         # Delete all elements classes
