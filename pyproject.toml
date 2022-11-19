@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "shamela2epub"
-version = "1.1.2"
-description = "A CLI and GUI tool to convert a book on https://shamela.ws to an EPUB book."
+version = "1.1.3"
+description = "A CLI and GUI tool to download a book on https://shamela.ws to an EPUB book."
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
 license = "GPL-3.0-only"
 repository = "https://github.com/yshalsager/shamela2epub/"
