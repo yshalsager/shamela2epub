@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from httpx import get
 
 
@@ -9,4 +9,4 @@ class BookBaseHTMLPage:
         """Base class for HTML pages."""
         self.url = url
         self._html: BeautifulSoup = BeautifulSoup(get(self.url).content, "html.parser")
-        self.content = self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
+        self.content: Tag = self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)

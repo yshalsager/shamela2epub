@@ -32,7 +32,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         self.page_url = self.url.split("#")[0]
         self._chapters_by_page: Dict[str, str] = {}
         self._toc_chapters_levels: Dict[str, int] = {}
-        self.content = self.get_clean_page_content()
+        self.content: Tag = self.get_clean_page_content()
         self.hamesh_items: Dict[str, Tag] = self.get_hamesh_items()
         self._update_hamesh()
 
@@ -42,7 +42,7 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     @property
     def current_page(self) -> Any:
-        return self._html.select_one(self.PAGE_NUMBER_SELECTOR).get("value")
+        return self._html.select_one(self.PAGE_NUMBER_SELECTOR).get("value", "")
 
     @property
     def has_next_page(self) -> bool:
@@ -52,7 +52,9 @@ class BookHTMLPage(BookBaseHTMLPage):
     def _get_page_number(page_anchor: Tag) -> str:
         match = BOOK_URL_PATTERN.search(page_anchor.get("href"))
         assert match is not None
-        return match.groupdict()["page"]
+        page = match.group("page")
+        assert isinstance(page, str)
+        return page
 
     @property
     def next_page(self) -> str:
@@ -66,7 +68,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         next_page_element = self._html.select_one(self.NEXT_PAGE_SELECTOR)
         if not next_page_element:
             return ""
-        return next_page_element.get("href")
+        return next_page_element.get("href", "")
 
     @property
     def last_page(self) -> str:
@@ -95,7 +97,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         return self.parse_toc(toc_ul)
 
     @property
-    def chapters_by_page(self) -> Any:
+    def chapters_by_page(self) -> Dict[str, Any]:
         if self._chapters_by_page:
             return self.chapters_by_page
         chapters_list = self._html.select(self.CHAPTERS_SELECTOR)
@@ -149,7 +151,9 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     def get_hamesh_items(self) -> Dict[str, Tag]:
         hamesh_items: Dict[str, Tag] = {}
-        hamesh = self.content.select_one(".hamesh")
+        if not self.content:
+            return hamesh_items
+        hamesh: Tag = self.content.select_one(".hamesh")
         if not hamesh:
             return hamesh_items
         hamesh_counter = 0
@@ -209,7 +213,9 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     def _update_hamesh(self) -> None:
         footnote_count = 1
-        hamesh = self.content.select_one(".hamesh")
+        if not self.content:
+            return
+        hamesh: Tag = self.content.select_one(".hamesh")
         if not hamesh:
             return
         new_hamesh = Tag(builder=hamesh.builder, name="div", attrs={"class": "hamesh"})
@@ -248,7 +254,7 @@ class BookHTMLPage(BookBaseHTMLPage):
                 #     + str(p)[match.start() + len(match.group()) : 0 - len("</p>")]
                 # )
                 # TODO: Find a better way to replace number with its a element,
-                #  since replacing only the first occurrence might not be the best soluion
+                #  since replacing only the first occurrence might not be the best solution
                 new_p_content = str(p).replace(number, str(footnote_link), 1)
                 new_p = Tag(builder=p.builder, name="p", parent=parent)
                 new_p.append(BeautifulSoup(new_p_content, "html.parser"))
