@@ -132,7 +132,8 @@ class BookHTMLPage(BookBaseHTMLPage):
         if not content:
             return content
         # Delete parent div class
-        del content["class"]
+        if hasattr(content, "class"):
+            del content["class"]
         # Delete all elements classes
         for element in filter(
             lambda x: isinstance(x, Tag) and x.get("class", None),

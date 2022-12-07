@@ -1,3 +1,7 @@
+from typing import Optional
+
+from bs4 import Tag
+
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
@@ -16,6 +20,11 @@ class BookInfoHTMLPage(BookBaseHTMLPage):
         self.author = self._html.select_one(self.BOOK_AUTHOR_SELECTOR).text.strip()
 
     def _sanitize_html(self) -> None:
-        self._html.select_one(self.INDEX_SELECTOR).decompose()
-        self._html.select_one(self.SEARCH_SELECTOR).decompose()
-        del self.content["class"]
+        book_index: Optional[Tag] = self._html.select_one(self.INDEX_SELECTOR)
+        if book_index:
+            book_index.decompose()
+        search_selector = self._html.select_one(self.SEARCH_SELECTOR)
+        if search_selector:
+            search_selector.decompose()
+        if hasattr(self.content, "class"):
+            del self.content["class"]
