@@ -1,7 +1,6 @@
 import re
 from typing import Dict, List, Optional
 
-from bs4 import Tag
 from ebooklib.epub import (
     EpubBook,
     EpubHtml,
@@ -11,6 +10,7 @@ from ebooklib.epub import (
     Link,
     write_epub,
 )
+from parsel import Selector
 
 from shamela2epub import __version__
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
@@ -65,7 +65,7 @@ class EPUBBook:
             title="بطاقة الكتاب",
             file_name="info.xhtml",
             lang="ar",
-            content=f"<html><body>{book_info_html_page.content}</body></html>",
+            content=f"<html><body>{book_info_html_page.text_content}</body></html>",
         )
         info_page.add_item(self._default_css)
         self._book.add_item(info_page)
@@ -83,8 +83,10 @@ class EPUBBook:
             self._sections.append(link)
             self._sections_map.update({i: link})
 
-    def replace_color_styles_with_class(self, html: Tag) -> str:
-        html_str = str(html)
+    def replace_color_styles_with_class(self, html: Optional[Selector]) -> str:
+        if not html:
+            return ""
+        html_str = html.get()
         matches = CSS_STYLE_COLOR_PATTERN.findall(html_str)
         if not matches:
             return html_str

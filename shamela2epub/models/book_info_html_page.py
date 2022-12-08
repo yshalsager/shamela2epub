@@ -1,30 +1,23 @@
-from typing import Optional
-
-from bs4 import Tag
-
+from shamela2epub.misc.patterns import PARENT_DIV_CLASS_PATTERN
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
 class BookInfoHTMLPage(BookBaseHTMLPage):
     SEARCH_SELECTOR = f"{BookBaseHTMLPage.BOOK_PAGE_CONTENT_SELECTOR} div.text-left"
     INDEX_SELECTOR = f"{BookBaseHTMLPage.BOOK_PAGE_CONTENT_SELECTOR} div.betaka-index"
-    BOOK_AUTHOR_SELECTOR = "h1 + div a"
-    BOOK_TITLE_SELECTOR = "h1 a"
+    BOOK_AUTHOR_SELECTOR = "h1 + div a::text"
+    BOOK_TITLE_SELECTOR = "h1 a::text"
 
     def __init__(self, url: str):
         """Book Info Page model constructor."""
         self.url = url
         super().__init__(url)
+        self.text_content: str = ""
         self._sanitize_html()
-        self.title = self._html.select_one(self.BOOK_TITLE_SELECTOR).text.strip()
-        self.author = self._html.select_one(self.BOOK_AUTHOR_SELECTOR).text.strip()
+        self.title = self._html.css(self.BOOK_TITLE_SELECTOR).get("").strip()
+        self.author = self._html.css(self.BOOK_AUTHOR_SELECTOR).get("").strip()
 
     def _sanitize_html(self) -> None:
-        book_index: Optional[Tag] = self._html.select_one(self.INDEX_SELECTOR)
-        if book_index:
-            book_index.decompose()
-        search_selector = self._html.select_one(self.SEARCH_SELECTOR)
-        if search_selector:
-            search_selector.decompose()
-        if hasattr(self.content, "class"):
-            del self.content["class"]
+        self._html.css(self.INDEX_SELECTOR).drop()
+        self._html.css(self.SEARCH_SELECTOR).drop()
+        self.text_content = PARENT_DIV_CLASS_PATTERN.sub("", self.content.get(""))
