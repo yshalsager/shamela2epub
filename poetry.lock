@@ -96,6 +96,14 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
 [[package]]
+name = "darkdetect"
+version = "0.7.1"
+description = "Detect OS Dark Mode from Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "distlib"
 version = "0.3.6"
 description = "Distribution utilities"
@@ -450,11 +458,14 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pyqtdarktheme"
-version = "1.2.1"
+version = "2.0.0"
 description = "Flat dark theme for PySide and PyQt."
 category = "main"
 optional = false
 python-versions = ">=3.7,<3.12"
+
+[package.dependencies]
+darkdetect = ">=0.7.1,<0.8.0"
 
 [[package]]
 name = "pywin32-ctypes"
@@ -620,7 +631,7 @@ testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "b614257162cebd20da206ef4b8fff2226086e92bd98da468fcce84c522e7683a"
+content-hash = "9104d9f33564ec88d423c3cd6611f1182340ef137d3a05c183a1a581db2cf797"
 
 [metadata.files]
 altgraph = [
@@ -664,6 +675,10 @@ click = [
 colorama = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
+]
+darkdetect = [
+    {file = "darkdetect-0.7.1-py2.py3-none-any.whl", hash = "sha256:3efe69f8ecd5f1b7f4fbb0d1d93f656b0e493c45cc49222380ffe2a529cbc866"},
+    {file = "darkdetect-0.7.1.tar.gz", hash = "sha256:47be3cf5134432ddb616bbffc927237718407914993c82809983e7ccebf49013"},
 ]
 distlib = [
     {file = "distlib-0.3.6-py2.py3-none-any.whl", hash = "sha256:f35c4b692542ca110de7ef0bea44d73981caeb34ca0b9b6b2e6d7790dda8f80e"},
@@ -941,8 +956,8 @@ pyqt5-sip = [
     {file = "PyQt5_sip-12.11.0.tar.gz", hash = "sha256:b4710fd85b57edef716cc55fae45bfd5bfac6fc7ba91036f1dcc3f331ca0eb39"},
 ]
 pyqtdarktheme = [
-    {file = "pyqtdarktheme-1.2.1-py3-none-any.whl", hash = "sha256:d9b790c7eb5b955dac9c01789e833838815b3e399be89ba8cc3306041d4e00a2"},
-    {file = "pyqtdarktheme-1.2.1.tar.gz", hash = "sha256:1b85e679175413fb1e7375d821178a25e1e7e2943e1dd1d1e8b630385c759933"},
+    {file = "pyqtdarktheme-2.0.0-py3-none-any.whl", hash = "sha256:046ad89dfe4333d513573f26298dc413a69bb854a5916ca8d00ed655ca11cca4"},
+    {file = "pyqtdarktheme-2.0.0.tar.gz", hash = "sha256:35415381dafd5dd82c9dddca1f917143beddcc004106fcf575c360698c0f9987"},
 ]
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
