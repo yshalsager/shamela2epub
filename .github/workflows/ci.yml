@@ -29,13 +29,13 @@ jobs:
           spec: shamela2epub.spec
           requirements: requirements-cli.txt
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.actor != 'dependabot[bot]'
         with:
           name: shamela2epubgui.exe
           path: dist/windows
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.actor != 'dependabot[bot]'
         with:
           name: shamela2epub.exe
@@ -55,13 +55,13 @@ jobs:
           spec: shamela2epub.spec
           requirements: requirements-cli.txt
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.actor != 'dependabot[bot]'
         with:
           name: shamela2epub
           path: dist/linux
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.actor != 'dependabot[bot]'
         with:
           name: shamela2epubgui
