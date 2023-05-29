@@ -1,10 +1,12 @@
 """Entry Point."""
 import click
+from trogon import tui
 
 from shamela2epub.cli.app import download
 from shamela2epub.gui.app import gui
 
 
+@tui()  # type: ignore[misc]
 @click.group()
 def click_cli() -> None:
     pass
