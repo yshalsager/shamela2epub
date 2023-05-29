@@ -5,7 +5,7 @@ from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 from sys import stderr, stdout
 
-import toml
+import tomli
 
 # Use __file__ so PyInstaller bundle can access files too
 PKG_DIR = Path(__file__).absolute().parent
@@ -18,7 +18,7 @@ try:
 except metadata.PackageNotFoundError:
     # otherwise, read version from pyproject
 
-    __version__ = toml.loads((PARENT_DIR / "pyproject.toml").read_text())["tool"][
+    __version__ = tomli.loads((PARENT_DIR / "pyproject.toml").read_text())["tool"][
         "poetry"
     ]["version"]
 
