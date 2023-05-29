@@ -1,12 +1,12 @@
-from bs4 import BeautifulSoup, Tag
 from httpx import get
+from parsel import Selector, SelectorList
 
 
 class BookBaseHTMLPage:
-    BOOK_PAGE_CONTENT_SELECTOR = "div.nass"
+    BOOK_PAGE_CONTENT_SELECTOR = ".nass"
 
     def __init__(self, url: str):
         """Base class for HTML pages."""
         self.url = url
-        self._html: BeautifulSoup = BeautifulSoup(get(self.url).content, "html.parser")
-        self.content: Tag = self._html.select_one(self.BOOK_PAGE_CONTENT_SELECTOR)
+        self._html: Selector = Selector(text=get(self.url).text)
+        self.content: SelectorList = self._html.css(self.BOOK_PAGE_CONTENT_SELECTOR)

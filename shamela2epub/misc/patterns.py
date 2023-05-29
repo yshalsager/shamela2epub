@@ -1,5 +1,5 @@
 import re
-from typing import Pattern
+from re import Pattern
 
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
 
@@ -30,3 +30,8 @@ ARABIC_NUMBER_BETWEEN_BRACKETS_PATTERN: Pattern = re.compile(
 ARABIC_NUMBER_BETWEEN_CURLY_BRACES_PATTERN: Pattern = re.compile(
     r"{.+?(\([\u0660-\u0669]+\)).+?}"
 )
+
+
+# HTML_CLASS_PATTERN = re.compile(r' class="(.*?)"')  # r' class="[\w\d -]+"'
+HTML_STYLE_PATTERN = re.compile(r' style="(.*?)"')
+PARENT_DIV_CLASS_PATTERN = re.compile(r' class="nass margin-top-10"')
