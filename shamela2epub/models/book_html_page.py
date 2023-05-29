@@ -1,8 +1,8 @@
 from re import Match
 from typing import Any, cast
-from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
+from defusedxml import ElementTree
 from parsel import Selector, SelectorList
 
 from shamela2epub.misc.constants import BOOK_RESOURCE
