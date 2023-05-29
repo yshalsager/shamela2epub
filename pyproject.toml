@@ -73,3 +73,13 @@ disallow_untyped_decorators = true
 
 [tool.pycln]
 all = true
+
+[tool.ruff]  # https://github.com/charliermarsh/ruff
+fix = true
+ignore-init-module-imports = true
+line-length = 100
+select = ["A", "B", "BLE", "C4", "C90", "DTZ", "E", "ERA", "F", "G", "I", "INP", "ISC", "N", "NPY", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "S", "SIM", "T10", "T20", "TID", "UP", "W", "YTT"]
+ignore = ["E501", "PGH001", "RET504", "S101", "D211", "D213", "ERA001", "G004"]
+unfixable = ["ERA001", "F401", "F841", "T201", "T203"]
+src = ["ebook_converter_bot"]
+target-version = "py310"

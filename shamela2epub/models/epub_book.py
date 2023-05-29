@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List, Optional
+from typing import cast
 
 from ebooklib.epub import (
     EpubBook,
@@ -26,20 +26,20 @@ class EPUBBook:
         self._pages_count: str = ""
         self._zfill_length = 0
         self._book: EpubBook = EpubBook()
-        self._pages: List[EpubHtml] = []
-        self._sections: List[Link] = []
-        self._sections_map: Dict[str, Link] = {}
-        self._parts_map: Dict[str, int] = {}
+        self._pages: list[EpubHtml] = []
+        self._sections: list[Link] = []
+        self._sections_map: dict[str, Link] = {}
+        self._parts_map: dict[str, int] = {}
         self._default_css: EpubItem = EpubItem()
-        self._color_styles_map: Dict[str, int] = {}
+        self._color_styles_map: dict[str, int] = {}
         self._last_color_id: int = 0
-        self._pages_map: Dict[int, int] = {}
+        self._pages_map: dict[int, int] = {}
 
     def set_page_count(self, count: str) -> None:
         self._pages_count = count
         self._zfill_length = len(count) + 1
 
-    def set_parts_map(self, parts_map: Dict[str, int]) -> None:
+    def set_parts_map(self, parts_map: dict[str, int]) -> None:
         self._parts_map = parts_map
 
     def init(self) -> None:
@@ -72,7 +72,7 @@ class EPUBBook:
         self._pages.append(info_page)
 
     def add_chapter(
-        self, chapters_in_page: Dict, new_page: EpubHtml, page_filename: str
+        self, chapters_in_page: dict, new_page: EpubHtml, page_filename: str
     ) -> None:
         for i in chapters_in_page:
             link = Link(
@@ -83,13 +83,13 @@ class EPUBBook:
             self._sections.append(link)
             self._sections_map.update({i: link})
 
-    def replace_color_styles_with_class(self, html: Optional[Selector]) -> str:
+    def replace_color_styles_with_class(self, html: Selector | None) -> str:
         if not html:
             return ""
         html_str = html.get()
         matches = CSS_STYLE_COLOR_PATTERN.findall(html_str)
         if not matches:
-            return html_str
+            return cast(str, html_str)
         for style in list(set(CSS_STYLE_COLOR_PATTERN.findall(html_str))):
             color_class = self._color_styles_map.get(style, "")
             if not color_class:
@@ -98,14 +98,14 @@ class EPUBBook:
                 self._last_color_id += 1
                 self._default_css.content += f"\n.{color_class} {{ {style}; }}\n\n"
             html_str = re.sub(f'style="{style}"', f'class="{color_class}"', html_str)
-        return html_str
+        return cast(str, html_str)
 
     def get_book_page_number(self, book_html_page: BookHTMLPage) -> str:
         """
         Get the correct page number, which will be in page file name
         """
         html_page_number: int = int(book_html_page.current_page)
-        book_page_count: Optional[int] = self._pages_map.get(html_page_number)
+        book_page_count: int | None = self._pages_map.get(html_page_number)
         current_page = None
         if book_page_count:
             new_page_count = book_page_count + 1
@@ -146,7 +146,7 @@ class EPUBBook:
             self.add_chapter(chapters_in_page, new_page, page_filename)
         return new_page
 
-    def _update_toc_list(self, toc: List) -> None:
+    def _update_toc_list(self, toc: list) -> None:
         # Bug: Books that have a last nested section with level deeper than its next with the same page number
         # cannot be converted to KFX unless that last nested section is removed.
         for index, element in enumerate(toc):
@@ -155,7 +155,7 @@ class EPUBBook:
             else:
                 toc[index] = self._sections_map.get(element, None)
 
-    def generate_toc(self, toc_list: List) -> None:
+    def generate_toc(self, toc_list: list) -> None:
         self._update_toc_list(toc_list)
         toc_list.insert(0, Link("nav.xhtml", "فهرس الموضوعات", "nav"))
         toc_list.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))

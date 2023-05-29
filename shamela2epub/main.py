@@ -1,6 +1,6 @@
 """shamela2epub main."""
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
 
 from shamela2epub import OUT_DIR
 from shamela2epub.misc.utils import (

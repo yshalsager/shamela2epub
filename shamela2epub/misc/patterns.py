@@ -1,5 +1,5 @@
 import re
-from typing import Pattern
+from re import Pattern
 
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
 

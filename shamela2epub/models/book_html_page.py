@@ -1,5 +1,5 @@
 from re import Match
-from typing import Any, Dict, List, Optional
+from typing import Any, cast
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 
@@ -35,10 +35,10 @@ class BookHTMLPage(BookBaseHTMLPage):
         super().__init__(url)
         self._remove_copy_btn_from_html()
         self.page_url = self.url.split("#")[0]
-        self._chapters_by_page: Dict[str, str] = {}
-        self._toc_chapters_levels: Dict[str, int] = {}
-        self.content: Optional[Selector] = self.get_clean_page_content()  # type: ignore
-        self.hamesh_items: Dict[str, Element] = self.get_hamesh_items()
+        self._chapters_by_page: dict[str, str] = {}
+        self._toc_chapters_levels: dict[str, int] = {}
+        self.content: Selector | None = self.get_clean_page_content()
+        self.hamesh_items: dict[str, Element] = self.get_hamesh_items()
         self._update_hamesh()
 
     def _remove_copy_btn_from_html(self) -> None:
@@ -54,7 +54,7 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     @staticmethod
     def _get_page_number(page_anchor: SelectorList) -> str:
-        match: Optional[Match] = BOOK_URL_PATTERN.search(
+        match: Match | None = BOOK_URL_PATTERN.search(
             page_anchor.attrib.get("href", "")
         )
         assert match is not None
@@ -70,15 +70,19 @@ class BookHTMLPage(BookBaseHTMLPage):
     @property
     def next_page_url(self) -> str:
         next_page_element: SelectorList = self._html.css(self.NEXT_PAGE_SELECTOR)
-        return next_page_element.attrib.get("href", "") if next_page_element else ""
+        return (
+            cast(str, next_page_element.attrib.get("href", ""))
+            if next_page_element
+            else ""
+        )
 
     @property
     def last_page(self) -> str:
         last_page_element: SelectorList = self._html.css(self.LAST_PAGE_SELECTOR)
         return self._get_page_number(last_page_element) if last_page_element else ""
 
-    def parse_toc(self, toc: SelectorList) -> List:
-        toc_list: List = []
+    def parse_toc(self, toc: SelectorList) -> list:
+        toc_list: list = []
         item: Selector
         for item in toc.css("li"):
             link: str = item.css("a::text").get("")
@@ -90,17 +94,17 @@ class BookHTMLPage(BookBaseHTMLPage):
         return toc_list
 
     @property
-    def toc(self) -> List[Any]:
+    def toc(self) -> list[Any]:
         toc_ul: SelectorList = self._html.css(self.BOOK_TOC_SELECTOR)
         toc_ul.css('a[href="javascript:;"]').drop()
         return self.parse_toc(toc_ul)
 
     @property
-    def chapters_by_page(self) -> Dict[str, Any]:
+    def chapters_by_page(self) -> dict[str, Any]:
         if self._chapters_by_page:
             return self.chapters_by_page
         chapters_list = self._html.css(self.CHAPTERS_SELECTOR)
-        chapters: Dict = {}
+        chapters: dict = {}
         for chapter in chapters_list:
             chapter_url = chapter.attrib.get("href", "")
             if chapters.get(chapter_url):
@@ -113,10 +117,10 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     @property
     def part(self) -> str:
-        return self._html.css(self.PAGE_PART_SELECTOR).get("").strip()
+        return cast(str, self._html.css(self.PAGE_PART_SELECTOR).get("").strip())
 
     @property
-    def parts_map(self) -> Dict[str, int]:
+    def parts_map(self) -> dict[str, int]:
         parts: SelectorList = self._html.css(self.PAGE_PARTS_MENU_SELECTOR)
         return (
             {
@@ -127,7 +131,7 @@ class BookHTMLPage(BookBaseHTMLPage):
             else {}
         )
 
-    def get_clean_page_content(self) -> Optional[Selector]:
+    def get_clean_page_content(self) -> Selector | None:
         """Get cleaned-up page content."""
         if not self.content:
             return self.content
@@ -147,12 +151,12 @@ class BookHTMLPage(BookBaseHTMLPage):
             if not element.css("::text").get():
                 element.drop()
         # Delete paragraph style
-        for element in self.content.css('p[style="font-size: 15px"]'):
-            element = Selector(text=HTML_STYLE_PATTERN.sub("", self.content.get()))
+        for _ in self.content.css('p[style="font-size: 15px"]'):
+            _ = Selector(text=HTML_STYLE_PATTERN.sub("", self.content.get()))
         return self.content
 
-    def get_hamesh_items(self) -> Dict[str, Element]:
-        hamesh_items: Dict[str, Element] = {}
+    def get_hamesh_items(self) -> dict[str, Element]:
+        hamesh_items: dict[str, Element] = {}
         if not self.content:
             return hamesh_items
         hamesh: SelectorList = self.content.css(".hamesh")
@@ -167,9 +171,8 @@ class BookHTMLPage(BookBaseHTMLPage):
                 if not type(self)._previous_page_hamesh
                 else f"{type(self)._previous_page_hamesh}\n{hamesh_continuation.group('continuation')}"
             )
-        else:
-            if not type(self)._previous_page_hamesh:
-                type(self)._previous_page_hamesh = ""
+        elif not type(self)._previous_page_hamesh:
+            type(self)._previous_page_hamesh = ""
         for match in HAMESH_PATTERN.finditer(hamesh.get("")):
             hamesh_counter += 1
             current_hamesh = match.group("number").strip()

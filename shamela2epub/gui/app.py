@@ -1,6 +1,6 @@
 from functools import partial
 from pathlib import Path
-from typing import Optional
+from typing import cast
 
 import click
 import qdarktheme
@@ -56,8 +56,8 @@ class App(QMainWindow):
     def __init__(self) -> None:
         """GUI App constructor."""
         super().__init__()
-        self.thread: QThread = QThread()  # type:ignore
-        self.worker: Optional[Worker] = None
+        self.thread: QThread = QThread()
+        self.worker: Worker | None = None
 
         uic.loadUi(f"{PKG_DIR}/gui/ui.ui", self)
         # self.setWindowIcon(QIcon(f"{WORK_DIR}/assets/books-duotone-512.png"))
@@ -100,7 +100,7 @@ class App(QMainWindow):
         if not output_directory:
             self.show_error_message("لم تختر مكانا لحفظ الكتاب!")
             return ""
-        return output_directory
+        return cast(str, output_directory)
 
     def report_progress(self, progress: str) -> None:
         self.update_statusbar(progress)

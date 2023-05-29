@@ -14,7 +14,7 @@ def download(url: str, output: str) -> None:
     """Download Shamela book form URL to ePub."""
     downloader = BookDownloader(url)
     if not downloader.valid:
-        print("The URL you entered is invalid! Exiting...")
+        logger.error("The URL you entered is invalid! Exiting...")
         return
     logger.info(f"Got valid URL: {url}")
     downloader.create_info_page()
