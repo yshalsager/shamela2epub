@@ -180,13 +180,13 @@ class BookHTMLPage(BookBaseHTMLPage):
             #  <aside id="fn1" epub:type="footnote">
             #  <p><a href="#fnref1" title="footnote 1">[1]</a> Text in popup</p>
             #  </aside>
-            new_footnote_aside = ElementTree.Element(
-                "aside", attrib={"id": f"fn{hamesh_counter}", "epub:type": "footnote"}
+            new_footnote_aside = Element(
+                "aside", {"id": f"fn{hamesh_counter}", "epub:type": "footnote"}
             )
-            new_footnote_span = ElementTree.Element("span")
-            new_footnote_a = ElementTree.Element(
+            new_footnote_span = Element("span")
+            new_footnote_a = Element(
                 "a",
-                attrib={
+                {
                     "href": f"#fnref{hamesh_counter}",
                     # "title": f"هامش {hamesh_counter}",
                     "class": "nu",
@@ -197,7 +197,7 @@ class BookHTMLPage(BookBaseHTMLPage):
                 new_footnote_span.text = type(self)._previous_page_hamesh.replace(
                     "\n", "<br>"
                 )
-                new_footnote_span.append(ElementTree.Element("br"))
+                new_footnote_span.append(Element("br"))
                 new_footnote_span.text = " " + hamesh_line.strip()
                 type(self)._previous_page_hamesh = ""
             else:
@@ -214,7 +214,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         hamesh: SelectorList = self.content.css(".hamesh")
         if not hamesh:
             return
-        new_hamesh: Element = ElementTree.Element("div", attrib={"class": "hamesh"})
+        new_hamesh: Element = Element("div", {"class": "hamesh"})
         parent: SelectorList = self.content.css("div")
         p_elements: SelectorList = self.content.css("p:not(.hamesh)")
         for p in p_elements:
@@ -231,9 +231,9 @@ class BookHTMLPage(BookBaseHTMLPage):
                     and match.start("number") > aya_match.start()
                 ):
                     continue
-                footnote_link: Element = ElementTree.Element(
+                footnote_link: Element = Element(
                     "a",
-                    attrib={
+                    {
                         "href": f"#fn{footnote_count}",
                         "epub:type": "noteref",
                         "role": "doc-noteref",
