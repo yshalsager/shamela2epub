@@ -1,5 +1,5 @@
 import re
-from typing import cast
+from typing import Any, cast
 
 from ebooklib.epub import (
     EpubBook,
@@ -23,24 +23,28 @@ from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 class EPUBBook:
     def __init__(self) -> None:
         """EPUB Book model."""
-        self._pages_count: str = ""
+        self.pages_count: int = 0
         self._zfill_length = 0
         self._book: EpubBook = EpubBook()
         self._pages: list[EpubHtml] = []
         self._sections: list[Link] = []
         self._sections_map: dict[str, Link] = {}
         self._parts_map: dict[str, int] = {}
+        self._toc: list[str] = []
         self._default_css: EpubItem = EpubItem()
         self._color_styles_map: dict[str, int] = {}
         self._last_color_id: int = 0
         self._pages_map: dict[int, int] = {}
 
     def set_page_count(self, count: str) -> None:
-        self._pages_count = count
+        self.pages_count = int(count) if count else 0
         self._zfill_length = len(count) + 1
 
     def set_parts_map(self, parts_map: dict[str, int]) -> None:
         self._parts_map = parts_map
+
+    def set_toc(self, toc_list: list[Any]) -> None:
+        self._toc = toc_list
 
     def init(self) -> None:
         self._book.set_language("ar")
@@ -106,7 +110,6 @@ class EPUBBook:
         """
         html_page_number: int = int(book_html_page.current_page)
         book_page_count: int | None = self._pages_map.get(html_page_number)
-        current_page = None
         if book_page_count:
             new_page_count = book_page_count + 1
             current_page = new_page_count
@@ -155,7 +158,8 @@ class EPUBBook:
             else:
                 toc[index] = self._sections_map.get(element, None)
 
-    def generate_toc(self, toc_list: list) -> None:
+    def generate_toc(self) -> None:
+        toc_list: list[Link | str] = self._toc
         self._update_toc_list(toc_list)
         toc_list.insert(0, Link("nav.xhtml", "فهرس الموضوعات", "nav"))
         toc_list.insert(0, Link("info.xhtml", "بطاقة الكتاب", "info"))
