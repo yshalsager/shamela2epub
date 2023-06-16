@@ -46,7 +46,10 @@ repos:
     rev: '1.5.1'  # add version here
     hooks:
       - id: poetry-check
-#      - id: poetry-lock
+      - id: poetry-export
+        args: [ "-f", "requirements.txt", "-o", "requirements-cli.txt", "--without-hashes" ]
+      - id: poetry-export
+        args: [ "-f", "requirements.txt", "-o", "requirements-gui.txt", "--without-hashes", "--with", "gui" ]
   - repo: https://github.com/MarcoGorelli/absolufy-imports
     rev: v0.3.1
     hooks:
