@@ -19,7 +19,7 @@ from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
 
 class BookHTMLPage(BookBaseHTMLPage):
-    BOOK_TOC_SELECTOR = "div.s-nav-head + ul"
+    BOOK_TOC_SELECTOR = "div.s-nav-head + ul > li"
     COPY_BTN_SELECTOR = "a.btn_tag"
     PAGE_NUMBER_SELECTOR = "input#fld_goto_bottom"
     PAGE_PARTS_SELECTOR = "#fld_part_top ~ div"
@@ -84,11 +84,11 @@ class BookHTMLPage(BookBaseHTMLPage):
     def parse_toc(self, toc: SelectorList) -> list:
         toc_list: list = []
         item: Selector
-        for item in toc.css("li"):
+        for item in toc:
             link: str = item.css("a::text").get("")
-            ul_list: SelectorList = item.css("ul")
+            ul_list: SelectorList = item.css("li ul")
             if ul_list:
-                toc_list.append([link, self.parse_toc(ul_list)])
+                toc_list.append([link, self.parse_toc(ul_list.css("ul li"))])
             else:
                 toc_list.append(link)
         return toc_list
