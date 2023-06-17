@@ -1,9 +1,6 @@
-import logging
-
-from httpx import get
 from parsel import Selector, SelectorList
 
-logging.getLogger("httpx").setLevel(logging.WARNING)
+from shamela2epub.misc.http import get_url_text
 
 
 class BookBaseHTMLPage:
@@ -12,5 +9,5 @@ class BookBaseHTMLPage:
     def __init__(self, url: str):
         """Base class for HTML pages."""
         self.url = url
-        self._html: Selector = Selector(text=get(self.url).text)
+        self._html: Selector = Selector(text=get_url_text(self.url))
         self.content: SelectorList = self._html.css(self.BOOK_PAGE_CONTENT_SELECTOR)
