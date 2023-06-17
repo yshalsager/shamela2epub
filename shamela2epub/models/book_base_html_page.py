@@ -1,5 +1,9 @@
+import logging
+
 from httpx import get
 from parsel import Selector, SelectorList
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 class BookBaseHTMLPage:
