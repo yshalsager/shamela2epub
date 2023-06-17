@@ -73,9 +73,9 @@ jobs:
           echo ${{ github.ref }}
           ref='refs/tags/v'
           if [[ ${{ github.ref }} == *${ref}* ]]; then
-            echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+            echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
           else
-            echo ::set-output name=version::$(date +'%Y%m%d-%H%M%S')
+            echo "version=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
           fi
 
       - name: Release
