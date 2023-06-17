@@ -1,8 +1,7 @@
 from re import Match
 from typing import Any, cast
-from xml.etree.ElementTree import Element
 
-from defusedxml import ElementTree
+from lxml.etree import Element, QName, XMLParser, tostring
 from parsel import Selector, SelectorList
 
 from shamela2epub.misc.constants import BOOK_RESOURCE
@@ -16,6 +15,9 @@ from shamela2epub.misc.patterns import (
     PARENT_DIV_CLASS_PATTERN,
 )
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
+
+xml_parser = XMLParser(resolve_entities=False)
+epub_type = QName("http://www.idpf.org/2007/ops", "type")
 
 
 class BookHTMLPage(BookBaseHTMLPage):
@@ -181,7 +183,8 @@ class BookHTMLPage(BookBaseHTMLPage):
             #  <p><a href="#fnref1" title="footnote 1">[1]</a> Text in popup</p>
             #  </aside>
             new_footnote_aside = Element(
-                "aside", {"id": f"fn{hamesh_counter}", "epub:type": "footnote"}
+                "aside",
+                {"id": f"fn{hamesh_counter}", epub_type: "footnote"},
             )
             new_footnote_span = Element("span")
             new_footnote_a = Element(
@@ -235,7 +238,7 @@ class BookHTMLPage(BookBaseHTMLPage):
                     "a",
                     {
                         "href": f"#fn{footnote_count}",
-                        "epub:type": "noteref",
+                        epub_type: "noteref",
                         "role": "doc-noteref",
                         "id": f"fnref{footnote_count}",
                         # "title": f"هامش {footnote_count}",
@@ -264,7 +267,7 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     @staticmethod
     def element_as_text(element: Element) -> str:
-        element_text: str = ElementTree.tostring(element, encoding="utf-8").decode()
+        element_text: str = tostring(element, encoding="utf-8").decode()
         assert isinstance(element_text, str)
         return element_text
 

@@ -1,13 +1,9 @@
 """Entry Point."""
-import logging
-
 import click
 from trogon import tui
 
 from shamela2epub.cli.app import download
 from shamela2epub.gui.app import gui
-
-logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 @tui()  # type: ignore[misc]
