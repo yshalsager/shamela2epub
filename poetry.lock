@@ -1196,13 +1196,13 @@ telegram = ["requests"]
 
 [[package]]
 name = "trogon"
-version = "0.4.0"
+version = "0.5.0"
 description = "Automatically generate a Textual TUI for your Click CLI"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "trogon-0.4.0-py3-none-any.whl", hash = "sha256:65fadb5bc25dbd3a2e2f49235fb16735f7b822e24d88b5c68980bb38e1124f99"},
-    {file = "trogon-0.4.0.tar.gz", hash = "sha256:b87736dfebf011e7b7c541e30105d2ecc0ed09fb0b874d4fa09a6416fa83db34"},
+    {file = "trogon-0.5.0-py3-none-any.whl", hash = "sha256:987d2195c1dd2f93c50e555063a9de57edbc5906ce20ee39081343ff194952c1"},
+    {file = "trogon-0.5.0.tar.gz", hash = "sha256:61a57f0f1a38227d90601cd020f46960be8e36947b5e56c6932c2e01ecc5042a"},
 ]
 
 [package.dependencies]
@@ -1370,4 +1370,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "e53787ed83c4a3382f6c4e6e183ccb03179910fa39aa07d7b5b87974c14e9ba4"
+content-hash = "1508bfbb91617fab5374e244abe0192d1b91535570dd781252f32b16317cdfe4"
