@@ -21,4 +21,7 @@
     enabled: true,
     schedule: ["before 5am on saturday"],
   },
+  "pip_requirements": {
+    "fileMatch": ["^pyproject\\.toml$"]
+  }
 }
