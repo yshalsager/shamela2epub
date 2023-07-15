@@ -4,7 +4,7 @@ from re import Pattern
 from shamela2epub.misc.constants import SHAMELA_DOMAIN
 
 BOOK_URL_PATTERN: Pattern = re.compile(
-    fr"(?:https?://)?{SHAMELA_DOMAIN}/book/(?P<bookID>\d+)/?(?P<page>\d+)?#?(?P<paragraph>p\d+)?"
+    rf"(?:https?://)?{SHAMELA_DOMAIN}/book/(?P<bookID>\d+)/?(?P<page>\d+)?#?(?P<paragraph>p\d+)?"
 )
 
 CSS_STYLE_COLOR_PATTERN: Pattern = re.compile(r'style="(color:#[\w\d]{6})"')
