@@ -1,7 +1,7 @@
 anyio==3.7.1 ; python_version >= "3.11" and python_version < "3.12"
 certifi==2023.7.22 ; python_version >= "3.11" and python_version < "3.12"
 cffi==1.15.1 ; platform_python_implementation == "CPython" and sys_platform == "win32" and python_version >= "3.11" and python_version < "3.12"
-click==8.1.6 ; python_version >= "3.11" and python_version < "3.12"
+click==8.1.7 ; python_version >= "3.11" and python_version < "3.12"
 colorama==0.4.6 ; python_version >= "3.11" and python_version < "3.12" and platform_system == "Windows"
 cssselect==1.2.0 ; python_version >= "3.11" and python_version < "3.12"
 ebooklib==0.18 ; python_version >= "3.11" and python_version < "3.12"
