@@ -50,9 +50,7 @@ class EPUBBook:
         self._book.set_language("ar")
         self._book.set_direction("rtl")
         self._book.add_metadata("DC", "publisher", f"https://{SHAMELA_DOMAIN}")
-        self._book.add_metadata(
-            None, "meta", "", {"name": "shamela2epub", "content": __version__}
-        )
+        self._book.add_metadata(None, "meta", "", {"name": "shamela2epub", "content": __version__})
         self._default_css = EpubItem(
             uid="style_default",
             file_name="style/styles.css",
@@ -75,9 +73,7 @@ class EPUBBook:
         self._book.add_item(info_page)
         self._pages.append(info_page)
 
-    def add_chapter(
-        self, chapters_in_page: dict, new_page: EpubHtml, page_filename: str
-    ) -> None:
+    def add_chapter(self, chapters_in_page: dict, new_page: EpubHtml, page_filename: str) -> None:
         for i in chapters_in_page:
             link = Link(
                 page_filename,

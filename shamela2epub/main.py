@@ -72,9 +72,7 @@ class BookDownloader:
         # Save to disk
         book_name = f"{self.book_info_page.title} - {self.book_info_page.author}.epub"
         if output:
-            output_book = (
-                output if output.endswith(".epub") else f"{output}/{book_name}"
-            )
+            output_book = output if output.endswith(".epub") else f"{output}/{book_name}"
         else:
             output_book = f"{OUT_DIR}/{book_name}"
         self.epub_book.save_book(output_book)

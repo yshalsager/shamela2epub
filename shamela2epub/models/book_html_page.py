@@ -56,9 +56,7 @@ class BookHTMLPage(BookBaseHTMLPage):
 
     @staticmethod
     def _get_page_number(page_anchor: SelectorList) -> str:
-        match: Match | None = BOOK_URL_PATTERN.search(
-            page_anchor.attrib.get("href", "")
-        )
+        match: Match | None = BOOK_URL_PATTERN.search(page_anchor.attrib.get("href", ""))
         assert match is not None
         page = match.group("page")
         assert isinstance(page, str)
@@ -72,11 +70,7 @@ class BookHTMLPage(BookBaseHTMLPage):
     @property
     def next_page_url(self) -> str:
         next_page_element: SelectorList = self._html.css(self.NEXT_PAGE_SELECTOR)
-        return (
-            cast(str, next_page_element.attrib.get("href", ""))
-            if next_page_element
-            else ""
-        )
+        return cast(str, next_page_element.attrib.get("href", "")) if next_page_element else ""
 
     @property
     def last_page(self) -> str:
@@ -125,10 +119,7 @@ class BookHTMLPage(BookBaseHTMLPage):
     def parts_map(self) -> dict[str, int]:
         parts: SelectorList = self._html.css(self.PAGE_PARTS_MENU_SELECTOR)
         return (
-            {
-                part.get(): index
-                for index, part in enumerate(parts.css("li a::text")[1:])
-            }
+            {part.get(): index for index, part in enumerate(parts.css("li a::text")[1:])}
             if parts
             else {}
         )
@@ -138,9 +129,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         if not self.content:
             return self.content
         # Delete parent div class
-        self.content = Selector(
-            text=PARENT_DIV_CLASS_PATTERN.sub("", self.content.get())
-        )
+        self.content = Selector(text=PARENT_DIV_CLASS_PATTERN.sub("", self.content.get()))
         # Delete all elements classes
         # for element in filter(
         #     lambda x: isinstance(x, Tag) and x.get("class", None),
@@ -197,9 +186,7 @@ class BookHTMLPage(BookBaseHTMLPage):
             )
             new_footnote_a.text = current_hamesh
             if type(self)._previous_page_hamesh:
-                new_footnote_span.text = type(self)._previous_page_hamesh.replace(
-                    "\n", "<br>"
-                )
+                new_footnote_span.text = type(self)._previous_page_hamesh.replace("\n", "<br>")
                 new_footnote_span.append(Element("br"))
                 new_footnote_span.text = " " + hamesh_line.strip()
                 type(self)._previous_page_hamesh = ""
@@ -253,16 +240,12 @@ class BookHTMLPage(BookBaseHTMLPage):
                 # )
                 # TODO: Find a better way to replace number with its a element,
                 #  since replacing only the first occurrence might not be the best solution
-                new_p_el = p.get().replace(
-                    number, self.element_as_text(footnote_link), 1
-                )
+                new_p_el = p.get().replace(number, self.element_as_text(footnote_link), 1)
                 self.content = Selector(text=parent.get("").replace(p.get(), new_p_el))
                 footnote_count += 1
                 new_hamesh.append(self.hamesh_items[number])
         self.content = Selector(
-            text=self.content.get().replace(
-                hamesh.get(""), self.element_as_text(new_hamesh)
-            )
+            text=self.content.get().replace(hamesh.get(""), self.element_as_text(new_hamesh))
         )
 
     @staticmethod

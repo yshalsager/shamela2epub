@@ -32,9 +32,7 @@ class QBookDownloader(BookDownloader):
     def download_page(self, page_number: int) -> BookHTMLPage:
         with self._sem:
             book_html_page = BookHTMLPage(f"{self.url}/{page_number}")
-            self.progress.emit(
-                f"تحميل الصفحة {page_number} من {self.epub_book.pages_count}"
-            )
+            self.progress.emit(f"تحميل الصفحة {page_number} من {self.epub_book.pages_count}")
         return book_html_page
 
     def download(self) -> None:
@@ -121,9 +119,7 @@ class App(QMainWindow):
 
     def choose_output_directory(self) -> str:
         """Opens select file Dialog."""
-        output_directory = QFileDialog().getExistingDirectory(
-            self, "اختر مكان حفظ الكتاب"
-        )
+        output_directory = QFileDialog().getExistingDirectory(self, "اختر مكان حفظ الكتاب")
         if not output_directory:
             self.show_error_message("لم تختر مكانا لحفظ الكتاب!")
             return ""

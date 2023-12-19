@@ -10,9 +10,7 @@ logger = logging.getLogger(__name__)
 @click.command()
 @click.argument("url", type=str)
 @click.option("-o", "--output", type=str, help="ePub output book custom name")
-@click.option(
-    "-x", "--connections", type=int, default=10, help="Max number of connections"
-)
+@click.option("-x", "--connections", type=int, default=10, help="Max number of connections")
 def download(url: str, output: str, connections: int) -> None:
     """Download Shamela book form URL to ePub."""
     downloader = BookDownloader(url, connections)
