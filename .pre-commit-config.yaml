@@ -64,11 +64,8 @@ repos:
     rev: 'v0.1.8'
     hooks:
       - id: ruff
-  - repo: https://github.com/psf/black
-    rev: 23.11.0
-    hooks:
-      - id: black
-        args: [ --config=pyproject.toml ]
+        args: [ --fix, --exit-zero ]
+      - id: ruff-format
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: 'v1.7.1'  # Use the sha / tag you want to point at
     hooks:

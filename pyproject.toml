@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shamela2epub"
-version = "1.3.1"
+version = "1.3.2"
 description = "A CLI and GUI tool to download a book on https://shamela.ws to an EPUB book."
 authors = ["yshalsager <ysh-alsager@hotmail.com>"]
 license = "GPL-3.0-only"
@@ -28,11 +28,10 @@ gevent = "^23.0.0"
 tqdm = "^4.65.0"
 
 [tool.poetry.group.gui.dependencies]
-PyQt5 = {version = "^5.15.7"}
+PyQt5 = "^5.15.10"
 pyqtdarktheme = ">=1.1,<3.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
 pre-commit = "^3.3.2"
 ruff = "^0.1.0"
 mypy = "^1.3"
@@ -48,18 +47,6 @@ shamela2epubgui = "shamela2epub.gui.app:gui"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.black]
-include = '(shamela2epub\/.*$|\.pyi?$)'
-exclude = '''
-/(
-    \.git
-  | __pycache__
-  | \.venv
-)/
-'''
-
-[tool.isort]
-profile = "black"
 
 [tool.mypy]
 files = ["shamela2epub"]
@@ -82,7 +69,7 @@ fix = true
 ignore-init-module-imports = true
 line-length = 100
 select = ["A", "B", "BLE", "C4", "C90", "DTZ", "E", "ERA", "F", "G", "I", "INP", "ISC", "N", "NPY", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "S", "SIM", "T10", "T20", "TID", "UP", "W", "YTT"]
-ignore = ["E501", "PGH001", "RET504", "S101", "D211", "D213", "ERA001", "G004"]
+ignore = ["E501", "PGH001", "RET504", "S101", "D211", "D213", "ERA001", "G004", "ISC001"]
 unfixable = ["ERA001", "F401", "F841", "T201", "T203"]
 src = ["shamela2epub"]
 target-version = "py311"
