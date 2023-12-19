@@ -126,7 +126,7 @@ class BookHTMLPage(BookBaseHTMLPage):
         parts: SelectorList = self._html.css(self.PAGE_PARTS_MENU_SELECTOR)
         return (
             {
-                part.get(""): index
+                part.get(): index
                 for index, part in enumerate(parts.css("li a::text")[1:])
             }
             if parts
