@@ -28,8 +28,8 @@ gevent = "^23.0.0"
 tqdm = "^4.65.0"
 
 [tool.poetry.group.gui.dependencies]
-PyQt5 = "^5.15.10"
-PyQt5-Qt5 = {version = "^5.15,!=5.15.11"}
+PyQt5 = "5.15.10"
+PyQt5-Qt5 = "5.15.10"
 pyqtdarktheme = ">=1.1,<3.0"
 
 [tool.poetry.group.dev.dependencies]
