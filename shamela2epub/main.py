@@ -1,4 +1,5 @@
 """shamela2epub main."""
+
 from pathlib import Path
 
 from gevent import Greenlet, joinall, spawn

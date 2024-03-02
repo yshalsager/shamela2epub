@@ -1,4 +1,5 @@
 """Entry Point."""
+
 import click
 from trogon import tui
 
