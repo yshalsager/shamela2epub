@@ -1,4 +1,5 @@
 """Module initialization"""
+
 import logging
 from importlib import metadata
 from logging.handlers import TimedRotatingFileHandler
