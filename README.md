@@ -22,7 +22,7 @@
 
 **Disclaimer:**
 
-*   This software is freeware and open source and is only intended for personal or educational use.
+* This software is freeware and open source and is only intended for personal or educational use.
 
 ## Installation
 
@@ -64,14 +64,14 @@ Options:
 
 ![gui](gui.png)
 
-*   If you installed the package from PyPI, you can use the following command:
+* If you installed the package from PyPI, you can use the following command:
 
 ```bash
 shamela2epubgui
 ```
 
-*   If you downloaded the latest gui exe file from releases you can open it normally and use it.
-*   Otherwise, use normal python command:
+* If you downloaded the latest gui exe file from releases you can open it normally and use it.
+* Otherwise, use normal python command:
 
 ```bash
 python3 -m shamela2epub gui
@@ -79,31 +79,32 @@ python3 -m shamela2epub gui
 
 ## Features
 
-*   CLI and GUI!
-*   Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) RTL standard book.
-*   Automatically adds a page for book information.
-*   Automatically generated table of contents with support for nested chapters.
-*   Automatically adds book part and page number to each page's footer.
-*   Sanitizes the book HTML from unnecessary elements and classes.
-*   Converts inline CSS color styles to CSS classes.
-*   Inline footnotes for easier navigation, click any footnote, and it will appear in a popup instead of having all footnotes in page footer.
+* CLI and GUI!
+* Creates an [EPUB3](https://www.w3.org/publishing/epub3/epub-spec.html) RTL standard book.
+* Automatically adds a page for book information.
+* Automatically generated table of contents with support for nested chapters.
+* Automatically adds book part and page number to each page's footer.
+* Sanitizes the book HTML from unnecessary elements and classes.
+* Converts inline CSS color styles to CSS classes.
+* Inline footnotes for easier navigation, click any footnote, and it will appear in a popup instead of having all
+  footnotes in page footer.
 
 ## Known Issues
 
-*   Books that have a last nested section with level deeper (e.g. 3) than its next section (e.g. 2) and both have the same
-    page number (e.g. `page_017.xhtml`) cannot be converted to KFX unless that last nested section is removed.
+* Books that have a last nested section with level deeper (e.g. 3) than its next section (e.g. 2) and both have the same
+  page number (e.g. `page_017.xhtml`) cannot be converted to KFX unless that last nested section is removed.
 
 ## TODO
 
 ### Next
 
-*   You tell me :)
+* You tell me :)
 
 ### Maybe
 
-*   Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
-    removing it from the TOC.
+* Fix TOC conversion problem when last nested section with level deeper than its next has the same page number by
+  removing it from the TOC.
 
 ## Acknowledgments
 
-*   GUI icons are made by the amazing [Phosphor Icons](https://phosphoricons.com/) (books - duotone - `#AB8B64`).
+* GUI icons are made by the amazing [Phosphor Icons](https://phosphoricons.com/) (books - duotone - `#AB8B64`).
