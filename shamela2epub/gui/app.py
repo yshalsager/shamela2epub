@@ -29,7 +29,7 @@ class QBookDownloader(BookDownloader):
 
     def download(self) -> None:
         self.progress.emit(f"تحميل الصفحة 1 من {self.epub_book.pages_count}")
-        self._base_download(
+        self._download(
             lambda page_number: self.progress.emit(
                 f"تحميل الصفحة {page_number} من {self.epub_book.pages_count}"
             )

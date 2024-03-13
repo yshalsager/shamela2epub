@@ -1,7 +1,7 @@
 from re import Match
 from typing import Any, cast
 
-from lxml.etree import Element, QName, XMLParser, tostring
+from lxml.etree import Element, QName, tostring
 from parsel import Selector, SelectorList
 
 from shamela2epub.misc.constants import BOOK_RESOURCE
@@ -16,7 +16,6 @@ from shamela2epub.misc.patterns import (
 )
 from shamela2epub.models.book_base_html_page import BookBaseHTMLPage
 
-xml_parser = XMLParser(resolve_entities=False)
 epub_type = QName("http://www.idpf.org/2007/ops", "type")
 
 

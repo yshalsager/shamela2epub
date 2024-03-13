@@ -43,7 +43,7 @@ class BookDownloader:
             self._progress_bar.total = self.epub_book.pages_count
             self._progress_bar.update(1)
 
-    def _base_download(self, progress_callback: Callable[[str | int], None]) -> None:
+    def _download(self, progress_callback: Callable[[str | int], None]) -> None:
         self.create_first_page()
         # This loop starts from the second page (since the first page is already downloaded)
         # and goes up to the total number of pages in the book. The step size is equal to the chunk size.
@@ -62,7 +62,7 @@ class BookDownloader:
         self._progress_bar = tqdm(
             desc="Downloading", colour="white", unit=" page", dynamic_ncols=True
         )
-        self._base_download(lambda page_number: self._progress_bar.update(1))  # type: ignore[union-attr]
+        self._download(lambda page_number: self._progress_bar.update(1))  # type: ignore[union-attr]
 
     def save_book(self, output: str) -> Path:
         # Generate TOC
