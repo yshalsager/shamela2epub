@@ -8,10 +8,10 @@ class BookInfoHTMLPage(BookBaseHTMLPage):
     BOOK_AUTHOR_SELECTOR = "h1 + div a::text"
     BOOK_TITLE_SELECTOR = "h1 a::text"
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, html: str) -> None:
         """Book Info Page model constructor."""
+        super().__init__(html)
         self.url = url
-        super().__init__(url)
         self.text_content: str = ""
         self._sanitize_html()
         self.title = self._html.css(self.BOOK_TITLE_SELECTOR).get("").strip()

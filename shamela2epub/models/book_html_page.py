@@ -32,10 +32,11 @@ class BookHTMLPage(BookBaseHTMLPage):
     CHAPTERS_SELECTOR = f"div.s-nav-head ~ ul a[href*='/{BOOK_RESOURCE}/']"
     _previous_page_hamesh: str = ""
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, html: str) -> None:
         """Book HTML page model constructor."""
-        super().__init__(url)
+        super().__init__(html)
         self._remove_copy_btn_from_html()
+        self.url = url
         self.page_url = self.url.split("#")[0]
         self._chapters_by_page: dict[str, str] = {}
         self._toc_chapters_levels: dict[str, int] = {}

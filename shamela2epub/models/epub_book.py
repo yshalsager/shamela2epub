@@ -73,7 +73,7 @@ class EPUBBook:
         self._book.add_item(info_page)
         self._pages.append(info_page)
 
-    def add_chapter(self, chapters_in_page: dict, new_page: EpubHtml, page_filename: str) -> None:
+    def add_chapter(self, chapters_in_page: dict, page_filename: str) -> None:
         for i in chapters_in_page:
             link = Link(
                 page_filename,
@@ -142,7 +142,7 @@ class EPUBBook:
         self._book.add_item(new_page)
         self._pages.append(new_page)
         if chapters_in_page:
-            self.add_chapter(chapters_in_page, new_page, page_filename)
+            self.add_chapter(chapters_in_page, page_filename)
         return new_page
 
     def _update_toc_list(self, toc: list) -> None:

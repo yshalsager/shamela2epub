@@ -1,21 +1,21 @@
-import logging
+from niquests import Session
+from urllib3 import Retry
 
-from gevent import sleep
-from httpx import codes, get
+TIME_OUT = 30
+MAX_RETRIES = 10
 
-logging.getLogger("httpx").setLevel(logging.WARNING)
+retry_strategy = Retry(
+    total=MAX_RETRIES,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["GET"],
+    backoff_factor=0.1,
+)
 
-TIME_OUT = 25
-MAX_RETRIES = 5
 
-
-def get_url_text(url: str) -> str:
-    response = get(url, timeout=TIME_OUT)
-    if response.status_code != codes.OK:
-        # retry getting the page 5 times in case the server is down
-        retries = 0
-        while response.status_code != codes.OK and retries < MAX_RETRIES:
-            sleep(5)
-            response = get(url, timeout=TIME_OUT)
-            retries += 1
-    return response.text or ""
+def get_session(connections: int) -> Session:
+    return Session(
+        resolver="doh+cloudflare://",
+        multiplexed=True,
+        retries=retry_strategy,
+        pool_maxsize=connections * 3,
+    )

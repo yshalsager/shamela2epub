@@ -1,23 +1,16 @@
 """shamela2epub main."""
 
+from collections.abc import Callable
 from pathlib import Path
 
-from gevent import Greenlet, joinall, spawn
-from gevent.lock import BoundedSemaphore
-from gevent.monkey import patch_all
 from tqdm import tqdm
 
 from shamela2epub import OUT_DIR
-from shamela2epub.misc.utils import (
-    get_book_first_page_url,
-    get_book_info_page_url,
-    is_valid_url,
-)
+from shamela2epub.misc.http import TIME_OUT, get_session
+from shamela2epub.misc.utils import get_book_first_page_url, get_book_info_page_url, is_valid_url
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
 from shamela2epub.models.epub_book import EPUBBook
-
-patch_all(thread=False)
 
 
 class BookDownloader:
@@ -28,17 +21,20 @@ class BookDownloader:
         self.url = url
         self.valid = is_valid_url(self.url)
         self.epub_book = EPUBBook()
-        self._sem = BoundedSemaphore(connections)
+        self._session = get_session(connections)
+        self._chunk_size = connections * 2
         self._progress_bar: tqdm | None = None
 
     def create_info_page(self) -> None:
         # Info Page
-        self.book_info_page = BookInfoHTMLPage(get_book_info_page_url(self.url))
+        url = get_book_info_page_url(self.url)
+        self.book_info_page = BookInfoHTMLPage(url, self._session.get(url, timeout=TIME_OUT).text)
         self.epub_book.init()
         self.epub_book.create_info_page(self.book_info_page)
 
     def create_first_page(self) -> None:
-        book_html_page = BookHTMLPage(get_book_first_page_url(self.url))
+        url = get_book_first_page_url(self.url)
+        book_html_page = BookHTMLPage(url, self._session.get(url, timeout=TIME_OUT).text)
         self.epub_book.set_page_count(book_html_page.last_page)
         self.epub_book.set_parts_map(book_html_page.parts_map)
         self.epub_book.set_toc(book_html_page.toc)
@@ -47,25 +43,26 @@ class BookDownloader:
             self._progress_bar.total = self.epub_book.pages_count
             self._progress_bar.update(1)
 
-    def download_page(self, page_number: int) -> BookHTMLPage:
-        with self._sem:
-            book_html_page = BookHTMLPage(f"{self.url}/{page_number}")
-            if self._progress_bar is not None:
-                self._progress_bar.update(1)
-        return book_html_page
+    def _base_download(self, progress_callback: Callable[[str | int], None]) -> None:
+        self.create_first_page()
+        # This loop starts from the second page (since the first page is already downloaded)
+        # and goes up to the total number of pages in the book. The step size is equal to the chunk size.
+        for i in range(2, self.epub_book.pages_count + 1, self._chunk_size):
+            responses = []
+            # This inner loop iterates over each page number in the current chunk.
+            # The range starts from the current page number `i` and goes up to
+            # either the end of the current chunk or the total number of pages, whichever is smaller.
+            for page_number in range(i, min(i + self._chunk_size, self.epub_book.pages_count + 1)):
+                responses.append(self._session.get(f"{self.url}/{page_number}", timeout=TIME_OUT))
+            for response in responses:
+                self.epub_book.add_page(BookHTMLPage(response.url, response.text))
+                progress_callback(response.url.split("/")[-1])
 
     def download(self) -> None:
         self._progress_bar = tqdm(
             desc="Downloading", colour="white", unit=" page", dynamic_ncols=True
         )
-        self.create_first_page()
-        jobs = [
-            spawn(self.download_page, page_number)
-            for page_number in range(2, self.epub_book.pages_count + 1)
-        ]
-        job: Greenlet
-        for job in joinall(jobs):
-            self.epub_book.add_page(job.value)
+        self._base_download(lambda page_number: self._progress_bar.update(1))  # type: ignore[union-attr]
 
     def save_book(self, output: str) -> Path:
         # Generate TOC

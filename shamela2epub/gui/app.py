@@ -4,7 +4,6 @@ from typing import cast
 
 import click
 import qdarktheme
-from gevent import Greenlet, joinall, spawn
 from PyQt5 import uic
 from PyQt5.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
 from PyQt5.QtGui import QFontDatabase
@@ -21,30 +20,20 @@ from PyQt5.QtWidgets import (
 from shamela2epub import PKG_DIR
 from shamela2epub.main import BookDownloader
 from shamela2epub.misc.utils import browse_file_directory
-from shamela2epub.models.book_html_page import BookHTMLPage
 
 
 class QBookDownloader(BookDownloader):
     def __init__(self, url: str) -> None:
-        super().__init__(url, connections=10)
+        super().__init__(url, connections=16)
         self.progress: pyqtSignal = pyqtSignal(str)
-
-    def download_page(self, page_number: int) -> BookHTMLPage:
-        with self._sem:
-            book_html_page = BookHTMLPage(f"{self.url}/{page_number}")
-            self.progress.emit(f"تحميل الصفحة {page_number} من {self.epub_book.pages_count}")
-        return book_html_page
 
     def download(self) -> None:
         self.progress.emit(f"تحميل الصفحة 1 من {self.epub_book.pages_count}")
-        self.create_first_page()
-        jobs = [
-            spawn(self.download_page, page_number)
-            for page_number in range(2, self.epub_book.pages_count + 1)
-        ]
-        job: Greenlet
-        for job in joinall(jobs):
-            self.epub_book.add_page(job.value)
+        self._base_download(
+            lambda page_number: self.progress.emit(
+                f"تحميل الصفحة {page_number} من {self.epub_book.pages_count}"
+            )
+        )
 
 
 class WorkerSignals(QObject):
