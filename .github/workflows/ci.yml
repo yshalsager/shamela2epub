@@ -24,7 +24,7 @@ jobs:
             --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
             --entrypoint /bin/sh ghcr.io/batonogov/pyinstaller-${{ matrix.os }}:v4.2.6 \
             -c "if [ -f /wine/drive_c/Python3/Lib/shutil.py ]; then sed -i 's/if hasattr(_winapi, \"CopyFile2\"):/if False:/g' /wine/drive_c/Python3/Lib/shutil.py; fi && \
-                cp requirements-${{ matrix.app }}.txt requirements.txt && \
+                cat requirements-${{ matrix.app }}.txt | cut -d ';' -f 1 > requirements.txt && \
                 /entrypoint.sh && \
                 mv dist/shamela2epub$(if [[ "${{ matrix.app }}" == 'gui' ]]; then echo 'gui'; fi)$(if [[ "${{ matrix.os }}" == 'windows' ]]; then echo '.exe'; fi) dist/shamela2epub$(if [[ "${{ matrix.app }}" == 'gui' ]]; then echo 'gui'; fi)_${{ matrix.os }}$(if [[ "${{ matrix.os }}" == 'windows' ]]; then echo '.exe'; fi) && \
                 ls -R dist/"
