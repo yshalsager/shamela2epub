@@ -10,62 +10,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '(deps') }}
-
+    strategy:
+      matrix:
+        os: ['windows', 'linux', 'osx']
+        app: ['gui', 'cli']
     steps:
       - uses: actions/checkout@v4
 
-      - name: Package GUI Application for Windows
-        uses: yshalsager/pyinstaller-action-windows@main
-        with:
-          path: .
-          spec: shamela2epubgui.spec
-          requirements: requirements-gui.txt
-
-      - name: Package CLI Application for Windows
-        uses: yshalsager/pyinstaller-action-windows@main
-        with:
-          path: .
-          spec: shamela2epub.spec
-          requirements: requirements-cli.txt
+      - name: Package Application
+        run: |
+          docker run \
+            --volume "$(pwd):/src/" \
+            --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
+            --entrypoint /bin/sh batonogov/pyinstaller-${{ matrix.os }}:python-3.11.7 \
+            -c "pip install requirements-${{ matrix.app }}.txt && /entrypoint.sh"
 
       - uses: actions/upload-artifact@v4
         if: github.actor != 'dependabot[bot]'
         with:
-          name: shamela2epubgui.exe
-          path: dist/windows
-
-      - uses: actions/upload-artifact@v4
-        if: github.actor != 'dependabot[bot]'
-        with:
-          name: shamela2epub.exe
-          path: dist/windows
-
-      - name: Package GUI Application for Linux
-        uses: yshalsager/pyinstaller-action-linux@main
-        with:
-          path: .
-          spec: shamela2epubgui.spec
-          requirements: requirements-gui.txt
-
-      - name: Package CLI Application for Linux
-        uses: yshalsager/pyinstaller-action-linux@main
-        with:
-          path: .
-          spec: shamela2epub.spec
-          requirements: requirements-cli.txt
-
-      - uses: actions/upload-artifact@v4
-        if: github.actor != 'dependabot[bot]'
-        with:
-          name: shamela2epub
-          path: dist/linux
-
-      - uses: actions/upload-artifact@v4
-        if: github.actor != 'dependabot[bot]'
-        with:
-          name: shamela2epubgui
-          path: dist/linux
+          name: shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}
+          path: dist/${{ matrix.os }}
 
       - name: Set release name to tag name or datetime
         id: release
@@ -80,7 +44,7 @@ jobs:
 
       - name: Release
         if: github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2.0.2
         with:
           tag_name: ${{ steps.release.outputs.version }}
           name: ${{ steps.release.outputs.version }}
