@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'windows', 'linux', 'osx' ]
+        os: [ 'windows', 'linux' ]
         app: [ 'gui', 'cli' ]
     steps:
       - uses: actions/checkout@v4
@@ -58,4 +58,4 @@ jobs:
           commit: 'master'
           tag: ${{ steps.release.outputs.version }}
           name: ${{ steps.release.outputs.version }}
-          artifacts: 'shamela2epub*'
+          artifacts: '*/*.zip'
