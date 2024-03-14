@@ -4,7 +4,11 @@ import click
 from trogon import tui
 
 from shamela2epub.cli.app import download
-from shamela2epub.gui.app import gui
+
+try:
+    from shamela2epub.gui.app import gui
+except ImportError:
+    gui = None  # type: ignore[assignment]
 
 
 @tui()  # type: ignore[misc]
@@ -15,7 +19,8 @@ def click_cli() -> None:
 
 def main() -> None:
     click_cli.add_command(download)
-    click_cli.add_command(gui)
+    if gui is not None:
+        click_cli.add_command(gui)
     click_cli()
 
 
