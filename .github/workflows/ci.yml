@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['windows', 'linux', 'osx']
-        app: ['gui', 'cli']
+        os: [ 'windows', 'linux', 'osx' ]
+        app: [ 'gui', 'cli' ]
     steps:
       - uses: actions/checkout@v4
 
@@ -24,7 +24,7 @@ jobs:
             --volume "$(pwd):/src/" \
             --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
             --entrypoint /bin/sh ghcr.io/batonogov/pyinstaller-${{ matrix.os }}:v4.2.6 \
-            -c "pip install -r requirements-${{ matrix.app }}.txt && /entrypoint.sh"
+            -c "cp requirements-${{ matrix.app }}.txt requirements.txt && /entrypoint.sh && mkdir -p dist/${{ matrix.os }}/ && mv dist/shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }} dist/${{ matrix.os }}/"
 
       - uses: actions/upload-artifact@v4
         if: github.actor != 'dependabot[bot]'
