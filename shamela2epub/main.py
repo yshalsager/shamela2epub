@@ -4,9 +4,10 @@ from collections.abc import Callable
 from pathlib import Path
 
 from tqdm import tqdm
+from urllib3.exceptions import HTTPError
 
 from shamela2epub import OUT_DIR
-from shamela2epub.misc.http import TIME_OUT, get_session
+from shamela2epub.misc.http import MAX_RETRIES, TIME_OUT, get_session
 from shamela2epub.misc.utils import get_book_first_page_url, get_book_info_page_url, is_valid_url
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
@@ -55,6 +56,12 @@ class BookDownloader:
             for page_number in range(i, min(i + self._chunk_size, self.epub_book.pages_count + 1)):
                 responses.append(self._session.get(f"{self.url}/{page_number}", timeout=TIME_OUT))
             for response in responses:
+                for _ in range(MAX_RETRIES):
+                    try:
+                        if response.status_code == 200:
+                            break
+                    except HTTPError:
+                        continue
                 self.epub_book.add_page(BookHTMLPage(response.url, response.text))
                 progress_callback(response.url.split("/")[-1])
 
