@@ -43,3 +43,25 @@ exe = EXE(
     entitlements_file=None,
     icon='shamela2epub/assets/books-duotone.ico',
 )
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    strip=False,
+    upx=False,
+    upx_exclude=[],
+    name="shamela2epubgui",
+)
+app = BUNDLE(
+    coll,
+    name="shamela2epub.app",
+    icon="shamela2epub/assets/books-duotone.icns",
+    bundle_identifier="com.shamela2epub",
+    version="1.4.2",
+    info_plist={
+        "NSPrincipalClass": "NSApplication",
+        "NSHighResolutionCapable": "True",
+    },
+)
