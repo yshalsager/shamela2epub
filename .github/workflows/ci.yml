@@ -15,30 +15,52 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'windows', 'linux' ]
-        app: [ 'gui', 'cli' ]
+        os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
+        python-version: [ '3.12' ]
+        poetry-version: [ "1.8.2" ]
+        variant: [ 'main', 'gui' ]
+        architecture: [ 'x64' ]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v3
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: Install requirements
+        if: ${{ matrix.variant }} == 'main'
+        run: poetry install --with main --with dev
+      - name: Install requirements (GUI)
+        if: ${{ matrix.variant }} == 'gui'
+        run: poetry install --with main --with dev --with gui
+      - name: Caching
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
       - name: Package Application
-        run: |
-          docker run \
-            --volume "$(pwd):/src/" \
-            --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
-            --entrypoint /bin/sh ghcr.io/batonogov/pyinstaller-${{ matrix.os }}:v4.2.6 \
-            -c "if [ -f /wine/drive_c/Python3/Lib/shutil.py ]; then sed -i 's/if hasattr(_winapi, \"CopyFile2\"):/if False:/g' /wine/drive_c/Python3/Lib/shutil.py; fi && \
-                cat requirements-${{ matrix.app }}.txt | cut -d ';' -f 1 > requirements.txt && \
-                /entrypoint.sh && \
-                mv dist/shamela2epub$(if [[ "${{ matrix.app }}" == 'gui' ]]; then echo 'gui'; fi)$(if [[ "${{ matrix.os }}" == 'windows' ]]; then echo '.exe'; fi) dist/shamela2epub$(if [[ "${{ matrix.app }}" == 'gui' ]]; then echo 'gui'; fi)_${{ matrix.os }}$(if [[ "${{ matrix.os }}" == 'windows' ]]; then echo '.exe'; fi) && \
-                ls -R dist/"
+        run: poetry run pyinstaller shamela2epub${{ matrix.variant == 'gui' && 'gui' || '' }}.spec
+      - name: Compress (Windows)
+        if: runner.os == 'Windows'
+        run: tar.exe -acf shamela2epub-${{ runner.os }}${{ matrix.variant == 'gui' && '-gui' || '' }}.zip dist/shamela2epub*
+      - name: Compress
+        if: runner.os != 'Windows'
+        run: zip -r9 shamela2epub-${{ runner.os }}${{ matrix.variant == 'gui' && '-gui' || '' }}.zip dist/shamela2epub*
+      - name: Display structure of downloaded files
+        run: ls -R
       - uses: actions/upload-artifact@v4
         if: github.actor != 'dependabot[bot]'
         with:
-          name: shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}_${{ matrix.os }}${{ matrix.os == 'windows' && '.exe' || '' }}
-          path: dist/shamela2epub*
+          name: shamela2epub-${{ runner.os }}${{ matrix.variant == 'gui' && '-gui' || '' }}.zip
+          path: shamela2epub-${{ runner.os }}${{ matrix.variant == 'gui' && '-gui' || '' }}.zip
+
   release:
     runs-on: ubuntu-latest
     needs: [ build ]
@@ -60,10 +82,10 @@ jobs:
             echo "version=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
           fi
       - name: Release
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           commit: 'master'
           tag: ${{ steps.release.outputs.version }}
           name: ${{ steps.release.outputs.version }}
-          artifacts: 'shamela2epub*/*'
+          artifacts: '*/*.zip'

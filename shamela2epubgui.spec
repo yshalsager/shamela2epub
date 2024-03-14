@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
-
+import platform
+from os import system
 
 block_cipher = None
 
@@ -9,7 +10,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[('pyproject.toml', '.'), ('shamela2epub/assets', './shamela2epub/assets'), ('shamela2epub/gui/ui.ui', './shamela2epub/gui/')],
-    hiddenimports=['PyQt5.sip'],
+    hiddenimports=['PyQt6.sip'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -41,8 +42,11 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='shamela2epub/assets/books-duotone.ico',
+    icon='./shamela2epub/assets/books-duotone.ico',
 )
+
+if platform.system() != 'Windows':
+    system('ls -R')
 
 coll = COLLECT(
     exe,
@@ -52,12 +56,12 @@ coll = COLLECT(
     strip=False,
     upx=False,
     upx_exclude=[],
-    name="shamela2epubgui",
+    name="collect"
 )
 app = BUNDLE(
     coll,
-    name="shamela2epub.app",
-    icon="shamela2epub/assets/books-duotone.icns",
+    name="shamela2epubgui.app",
+    icon="./shamela2epub/assets/books-duotone.icns",
     bundle_identifier="com.shamela2epub",
     version="1.4.2",
     info_plist={
