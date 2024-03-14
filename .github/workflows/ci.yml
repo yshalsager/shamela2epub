@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'windows', 'linux', 'osx' ]
+        os: [ 'windows', 'linux' ]
         app: [ 'gui', 'cli' ]
     steps:
       - uses: actions/checkout@v4
