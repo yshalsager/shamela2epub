@@ -16,7 +16,7 @@ include = [
 readme = "README.md"
 
 [tool.poetry.group.main.dependencies]
-python = ">=3.11,<3.12"
+python = ">=3.12,<3.13"
 niquests = "^3.5.3"
 EbookLib = ">=0.17.1,<0.19.0"
 lxml = "^5.0.0"
