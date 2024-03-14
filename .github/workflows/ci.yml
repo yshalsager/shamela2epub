@@ -23,7 +23,7 @@ jobs:
             --volume "$(pwd):/src/" \
             --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
             --entrypoint /bin/sh batonogov/pyinstaller-${{ matrix.os }}:python-3.11.7 \
-            -c "pip install requirements-${{ matrix.app }}.txt && /entrypoint.sh"
+            -c "pip install -r requirements-${{ matrix.app }}.txt && /entrypoint.sh"
 
       - uses: actions/upload-artifact@v4
         if: github.actor != 'dependabot[bot]'
