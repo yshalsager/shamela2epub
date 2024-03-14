@@ -11,6 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         os: ['windows', 'linux', 'osx']
         app: ['gui', 'cli']
@@ -22,7 +23,7 @@ jobs:
           docker run \
             --volume "$(pwd):/src/" \
             --env SPECFILE=./shamela2epub${{ matrix.app == 'gui' && 'gui' || '' }}.spec \
-            --entrypoint /bin/sh batonogov/pyinstaller-${{ matrix.os }}:python-3.11.7 \
+            --entrypoint /bin/sh ghcr.io/batonogov/pyinstaller-${{ matrix.os }}:v4.2.6 \
             -c "pip install -r requirements-${{ matrix.app }}.txt && /entrypoint.sh"
 
       - uses: actions/upload-artifact@v4
@@ -51,5 +52,7 @@ jobs:
           files: |
             dist/windows/shamela2epub.exe
             dist/linux/shamela2epub
+            dist/osx/shamela2epub
             dist/windows/shamela2epubgui.exe
             dist/linux/shamela2epubgui
+            dist/osx/shamela2epubgui

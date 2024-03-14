@@ -4,18 +4,10 @@ from typing import cast
 
 import click
 import qdarktheme
-from PyQt5 import uic
-from PyQt5.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
-from PyQt5.QtGui import QFontDatabase
-from PyQt5.QtWidgets import (
-    QApplication,
-    QDesktopWidget,
-    QFileDialog,
-    QLabel,
-    QMainWindow,
-    QMessageBox,
-    QPushButton,
-)
+from PyQt6 import uic
+from PyQt6.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
+from PyQt6.QtGui import QFontDatabase, QGuiApplication
+from PyQt6.QtWidgets import QApplication, QFileDialog, QLabel, QMainWindow, QMessageBox, QPushButton
 
 from shamela2epub import PKG_DIR
 from shamela2epub.main import BookDownloader
@@ -85,26 +77,23 @@ class App(QMainWindow):
 
     def on_process_complete(self, filepath: Path) -> None:
         message_box = QMessageBox(
-            QMessageBox.Information,
+            QMessageBox.Icon.Information,
             "اكتمل التحميل",
             "هل تريد فتح الكتاب الآن؟",
-            parent=self,
+            QMessageBox.StandardButton.NoButton,
+            self,
         )
-        open_path = QPushButton("فتح")
-        message_box.addButton(QPushButton("لا"), QMessageBox.NoRole)
-        message_box.addButton(open_path, QMessageBox.ActionRole)
-        open_path.clicked.connect(partial(browse_file_directory, filepath))
-        message_box.exec_()
+        message_box.addButton("لا", QMessageBox.ButtonRole.NoRole)
+        open_path_button = message_box.addButton("فتح", QMessageBox.ButtonRole.ActionRole)
+        open_path_button.clicked.connect(partial(browse_file_directory, filepath))
+        message_box.exec()
 
     def show_error_message(self, message: str) -> None:
         message_box = QMessageBox(
-            QMessageBox.Critical,
-            "خطأ",
-            message,
-            parent=self,
+            QMessageBox.Icon.Critical, "خطأ", message, QMessageBox.StandardButton.OkButton, self
         )
-        message_box.addButton(QPushButton("حسنا"), QMessageBox.YesRole)
-        message_box.exec_()
+        message_box.addButton(QPushButton("حسنا"), QMessageBox.ButtonRole.YesRole)
+        message_box.exec()
 
     def choose_output_directory(self) -> str:
         """Opens select file Dialog."""
@@ -156,7 +145,7 @@ class App(QMainWindow):
         # geometry of the main window
         window = self.frameGeometry()
         # center point of screen
-        center_point = QDesktopWidget().availableGeometry().center()
+        center_point = QGuiApplication.primaryScreen().availableGeometry().center()
         # move rectangle's center point to screen's center point
         window.moveCenter(center_point)
         # top left of rectangle becomes top left of window centering it
@@ -173,7 +162,7 @@ def gui() -> None:
     QFontDatabase.addApplicationFont(f"{PKG_DIR}/assets/NotoNaskhArabic-Regular.ttf")
     app.setStyleSheet(qdarktheme.load_stylesheet())
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

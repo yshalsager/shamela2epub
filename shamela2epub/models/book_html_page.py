@@ -211,7 +211,7 @@ class BookHTMLPage(BookBaseHTMLPage):
             matches = ARABIC_NUMBER_BETWEEN_BRACKETS_PATTERN.finditer(p.get())
             for match in matches:
                 number = match.group("number")
-                if not self.hamesh_items.get(number, ""):
+                if self.hamesh_items.get(number) is None:
                     continue
                 aya_match = ARABIC_NUMBER_BETWEEN_CURLY_BRACES_PATTERN.search(p.get())
                 if (

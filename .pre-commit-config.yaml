@@ -47,9 +47,9 @@ repos:
     hooks:
       - id: poetry-check
       - id: poetry-export
-        args: [ "-f", "requirements.txt", "-o", "requirements-cli.txt", "--without-hashes" ]
+        args: [ "-f", "requirements.txt", "-o", "requirements-cli.txt", "--without-hashes" , "--with", "main" ]
       - id: poetry-export
-        args: [ "-f", "requirements.txt", "-o", "requirements-gui.txt", "--without-hashes", "--with", "gui" ]
+        args: [ "-f", "requirements.txt", "-o", "requirements-gui.txt", "--without-hashes", "--with", "main", "--with", "gui" ]
   - repo: https://github.com/MarcoGorelli/absolufy-imports
     rev: v0.3.1
     hooks:
