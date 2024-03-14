@@ -66,4 +66,4 @@ jobs:
           commit: 'master'
           tag: ${{ steps.release.outputs.version }}
           name: ${{ steps.release.outputs.version }}
-          artifacts: 'shamela2epub*'
+          artifacts: 'shamela2epub*/*'
