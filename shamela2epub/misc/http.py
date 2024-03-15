@@ -1,7 +1,7 @@
 from niquests import Session
 from urllib3 import Retry
 
-TIME_OUT = 30
+TIME_OUT = 60
 MAX_RETRIES = 10
 
 retry_strategy = Retry(

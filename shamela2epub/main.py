@@ -1,5 +1,6 @@
 """shamela2epub main."""
 
+import logging
 from collections.abc import Callable
 from pathlib import Path
 
@@ -56,11 +57,12 @@ class BookDownloader:
             for page_number in range(i, min(i + self._chunk_size, self.epub_book.pages_count + 1)):
                 responses.append(self._session.get(f"{self.url}/{page_number}", timeout=TIME_OUT))
             for response in responses:
-                for _ in range(MAX_RETRIES):
+                for _i in range(MAX_RETRIES):
                     try:
                         if response.status_code == 200:
                             break
-                    except HTTPError:
+                    except HTTPError as err:
+                        logging.warning(f"HTTPError (try {_i}): {err}")
                         continue
                 self.epub_book.add_page(BookHTMLPage(response.url, response.text))
                 progress_callback(response.url.split("/")[-1])
