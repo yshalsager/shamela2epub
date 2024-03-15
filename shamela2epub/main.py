@@ -54,15 +54,22 @@ class BookDownloader:
             # This inner loop iterates over each page number in the current chunk.
             # The range starts from the current page number `i` and goes up to
             # either the end of the current chunk or the total number of pages, whichever is smaller.
-            for page_number in range(i, min(i + self._chunk_size, self.epub_book.pages_count + 1)):
+            pages = list(range(i, min(i + self._chunk_size, self.epub_book.pages_count + 1)))
+            for page_number in pages:
                 responses.append(self._session.get(f"{self.url}/{page_number}", timeout=TIME_OUT))
-            for response in responses:
+            for idx, response in enumerate(responses):
                 for _i in range(MAX_RETRIES):
                     try:
                         if response.status_code == 200:
                             break
-                    except HTTPError as err:
-                        logging.warning(f"HTTPError (try {_i}): {err}")
+                    except (TimeoutError, HTTPError) as err:
+                        logging.warning(f"(try {_i}): {err}")
+                        responses[idx] = self._session.get(
+                            f"{self.url}/{pages[idx]}", timeout=TIME_OUT
+                        )
+                        continue
+                    except Exception as err:
+                        logging.error(f"Error (try {_i}): {err}")
                         continue
                 self.epub_book.add_page(BookHTMLPage(response.url, response.text))
                 progress_callback(response.url.split("/")[-1])
