@@ -651,13 +651,13 @@ files = [
 
 [[package]]
 name = "niquests"
-version = "3.6.5"
+version = "3.6.6"
 description = "Niquests is a simple, yet elegant, HTTP library. It is a drop-in replacement for Requests, which is under feature freeze."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "niquests-3.6.5-py3-none-any.whl", hash = "sha256:8a2334da25001ef0db044ab0198d39704409e4c2d442ca18c5abd7ddee2ffd6a"},
-    {file = "niquests-3.6.5.tar.gz", hash = "sha256:3895ec88e96c3050e11f79b6a6855ede8147f6fa2080ef74b2cc0a3bbe379653"},
+    {file = "niquests-3.6.6-py3-none-any.whl", hash = "sha256:7ae559fe695d3ee9a1dfd6d06b5141d2758b3e2133e62409c4b15e45ce888ed7"},
+    {file = "niquests-3.6.6.tar.gz", hash = "sha256:447b96164babc6d8fa9d3b85e3cbcac23658b5d9b9223fcb2cdbb6f44063e4c8"},
 ]
 
 [package.dependencies]
