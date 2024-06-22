@@ -195,18 +195,18 @@ six = "*"
 
 [[package]]
 name = "filelock"
-version = "3.15.1"
+version = "3.15.3"
 description = "A platform independent file lock."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "filelock-3.15.1-py3-none-any.whl", hash = "sha256:71b3102950e91dfc1bb4209b64be4dc8854f40e5f534428d8684f953ac847fac"},
-    {file = "filelock-3.15.1.tar.gz", hash = "sha256:58a2549afdf9e02e10720eaa4d4470f56386d7a6f72edd7d0596337af8ed7ad8"},
+    {file = "filelock-3.15.3-py3-none-any.whl", hash = "sha256:0151273e5b5d6cf753a61ec83b3a9b7d8821c39ae9af9d7ecf2f9e2f17404103"},
+    {file = "filelock-3.15.3.tar.gz", hash = "sha256:e1199bf5194a2277273dacd50269f0d87d0682088a3c561c15674ea9005d8635"},
 ]
 
 [package.extras]
 docs = ["furo (>=2023.9.10)", "sphinx (>=7.2.6)", "sphinx-autodoc-typehints (>=1.25.2)"]
-testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8.0.1)", "pytest (>=7.4.3)", "pytest-asyncio (>=0.21)", "pytest-cov (>=4.1)", "pytest-mock (>=3.12)", "pytest-timeout (>=2.2)"]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8.0.1)", "pytest (>=7.4.3)", "pytest-asyncio (>=0.21)", "pytest-cov (>=4.1)", "pytest-mock (>=3.12)", "pytest-timeout (>=2.2)", "virtualenv (>=20.26.2)"]
 typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
@@ -1091,18 +1091,18 @@ files = [
 
 [[package]]
 name = "setuptools"
-version = "70.0.0"
+version = "70.1.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "setuptools-70.0.0-py3-none-any.whl", hash = "sha256:54faa7f2e8d2d11bcd2c07bed282eef1046b5c080d1c32add737d7b5817b1ad4"},
-    {file = "setuptools-70.0.0.tar.gz", hash = "sha256:f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0"},
+    {file = "setuptools-70.1.0-py3-none-any.whl", hash = "sha256:d9b8b771455a97c8a9f3ab3448ebe0b29b5e105f1228bba41028be116985a267"},
+    {file = "setuptools-70.1.0.tar.gz", hash = "sha256:01a1e793faa5bd89abc851fa15d0a0db26f160890c7102cd8dce643e886b47f5"},
 ]
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "pyproject-hooks (!=1.1)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
-testing = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "importlib-metadata", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mypy (==1.9)", "packaging (>=23.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.1)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-home (>=0.5)", "pytest-mypy", "pytest-perf", "pytest-ruff (>=0.2.1)", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+testing = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "importlib-metadata", "ini2toml[lite] (>=0.14)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "jaraco.test", "mypy (==1.10.0)", "packaging (>=23.2)", "pip (>=19.1)", "pyproject-hooks (!=1.1)", "pytest (>=6,!=8.1.1)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-home (>=0.5)", "pytest-mypy", "pytest-perf", "pytest-ruff (>=0.3.2)", "pytest-subprocess", "pytest-timeout", "pytest-xdist (>=3)", "tomli", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
 name = "six"
@@ -1117,13 +1117,13 @@ files = [
 
 [[package]]
 name = "textual"
-version = "0.68.0"
+version = "0.70.0"
 description = "Modern Text User Interface framework"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "textual-0.68.0-py3-none-any.whl", hash = "sha256:1c74901cb22ea7243ce699b7a0f6d7095144dbc7bad7180d29cdee1011e382fc"},
-    {file = "textual-0.68.0.tar.gz", hash = "sha256:803d9e96bb6205aee85af8b4e68edbab04d506bfc124681ae1695dbdc43b6e1d"},
+    {file = "textual-0.70.0-py3-none-any.whl", hash = "sha256:774bf45782193760ca273b915fd685cada37d0836237d61dc57d5bcdbe2c7ddb"},
+    {file = "textual-0.70.0.tar.gz", hash = "sha256:9ca3f615b5cf442246325e40ef8255424c42b4241d3c62f9c0f96951bab82b1e"},
 ]
 
 [package.dependencies]
@@ -1229,19 +1229,19 @@ test = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
 name = "urllib3-future"
-version = "2.7.913"
+version = "2.7.914"
 description = "urllib3.future is a powerful HTTP 1.1, 2, and 3 client with both sync and async interfaces"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "urllib3_future-2.7.913-py3-none-any.whl", hash = "sha256:a7adebba6d28348401df57ca84545c6a52b7e4fb943efafc77a27a28c4768221"},
-    {file = "urllib3_future-2.7.913.tar.gz", hash = "sha256:8e0eefc7e2c1d6a81a30575e3c4cf425b5ee6bd6f9fb0a85f6c556cde03ff5e8"},
+    {file = "urllib3_future-2.7.914-py3-none-any.whl", hash = "sha256:baf49fd6f12a6d06c3d3d7c79d365049627ff24d1cb40a04c2bcb5b85317d37f"},
+    {file = "urllib3_future-2.7.914.tar.gz", hash = "sha256:b2a3f0d10bad557c8c1167d37b395fe250e6034df347ae0176d4d0c9ab191353"},
 ]
 
 [package.dependencies]
 h11 = ">=0.11.0,<1.0.0"
 jh2 = ">=5.0.3,<6.0.0"
-qh3 = {version = ">=1.0.3,<2.0.0", markers = "(platform_system == \"Darwin\" or platform_system == \"Windows\" or platform_system == \"Linux\") and (platform_machine == \"x86_64\" or platform_machine == \"s390x\" or platform_machine == \"aarch64\" or platform_machine == \"armv7l\" or platform_machine == \"ppc64le\" or platform_machine == \"ppc64\" or platform_machine == \"AMD64\" or platform_machine == \"arm64\") and (platform_python_implementation == \"CPython\" or (platform_python_implementation == \"PyPy\" and python_version < \"3.11\"))"}
+qh3 = {version = ">=1.0.3,<2.0.0", markers = "(platform_system == \"Darwin\" or platform_system == \"Windows\" or platform_system == \"Linux\") and (platform_machine == \"x86_64\" or platform_machine == \"s390x\" or platform_machine == \"aarch64\" or platform_machine == \"armv7l\" or platform_machine == \"ppc64le\" or platform_machine == \"ppc64\" or platform_machine == \"AMD64\" or platform_machine == \"arm64\" or platform_machine == \"ARM64\") and (platform_python_implementation == \"CPython\" or (platform_python_implementation == \"PyPy\" and python_version < \"3.11\"))"}
 
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
@@ -1251,13 +1251,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "virtualenv"
-version = "20.26.2"
+version = "20.26.3"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "virtualenv-20.26.2-py3-none-any.whl", hash = "sha256:a624db5e94f01ad993d476b9ee5346fdf7b9de43ccaee0e0197012dc838a0e9b"},
-    {file = "virtualenv-20.26.2.tar.gz", hash = "sha256:82bf0f4eebbb78d36ddaee0283d43fe5736b53880b8a8cdcd37390a07ac3741c"},
+    {file = "virtualenv-20.26.3-py3-none-any.whl", hash = "sha256:8cc4a31139e796e9a7de2cd5cf2489de1217193116a8fd42328f1bd65f434589"},
+    {file = "virtualenv-20.26.3.tar.gz", hash = "sha256:4c43a2a236279d9ea36a0d76f98d84bd6ca94ac4e0f4a3b9d46d05e10fea542a"},
 ]
 
 [package.dependencies]
