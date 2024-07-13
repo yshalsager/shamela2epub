@@ -651,20 +651,20 @@ files = [
 
 [[package]]
 name = "niquests"
-version = "3.7.0"
+version = "3.7.2"
 description = "Niquests is a simple, yet elegant, HTTP library. It is a drop-in replacement for Requests, which is under feature freeze."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "niquests-3.7.0-py3-none-any.whl", hash = "sha256:97622af298ff543d976312563c546d49b35248df04a63c991cda536fee0de794"},
-    {file = "niquests-3.7.0.tar.gz", hash = "sha256:ccb1fdf63a36cb82928a8872adb4ba8ffcac8269d29ee7790e850035b92d1b88"},
+    {file = "niquests-3.7.2-py3-none-any.whl", hash = "sha256:8215688149ede753728e94ca983100671f20c3acd492c40e48b5b4f80d5fbd2b"},
+    {file = "niquests-3.7.2.tar.gz", hash = "sha256:c5ca9ed726e00db392b20ac64a37a2841ec71f4fb352996622a6cb693ca635a9"},
 ]
 
 [package.dependencies]
 charset-normalizer = ">=2,<4"
 idna = ">=2.5,<4"
 kiss-headers = ">=2,<4"
-urllib3-future = ">=2.8.900,<3"
+urllib3-future = ">=2.8.902,<3"
 wassima = ">=1.0.1,<2"
 
 [package.extras]
@@ -850,6 +850,7 @@ python-versions = "*"
 files = [
     {file = "PyQt6_Qt6-6.7.2-py3-none-macosx_10_14_x86_64.whl", hash = "sha256:065415589219a2f364aba29d6a98920bb32810286301acbfa157e522d30369e3"},
     {file = "PyQt6_Qt6-6.7.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:7f817efa86a0e8eda9152c85b73405463fbf3266299090f32bbb2266da540ead"},
+    {file = "PyQt6_Qt6-6.7.2-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:05f2c7d195d316d9e678a92ecac0252a24ed175bd2444cc6077441807d756580"},
     {file = "PyQt6_Qt6-6.7.2-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:fc93945eaef4536d68bd53566535efcbe78a7c05c2a533790a8fd022bac8bfaa"},
     {file = "PyQt6_Qt6-6.7.2-py3-none-win_amd64.whl", hash = "sha256:b2d7e5ddb1b9764cd60f1d730fa7bf7a1f0f61b2630967c81761d3d0a5a8a2e0"},
 ]
@@ -1230,13 +1231,13 @@ test = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
 name = "urllib3-future"
-version = "2.8.901"
+version = "2.8.902"
 description = "urllib3.future is a powerful HTTP 1.1, 2, and 3 client with both sync and async interfaces"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "urllib3_future-2.8.901-py3-none-any.whl", hash = "sha256:be15eab2d88093a1e9dc212a0e742d9b81fe907180fce309ea1d18df0ceee0ad"},
-    {file = "urllib3_future-2.8.901.tar.gz", hash = "sha256:0a479d45b1433471e1b2c95ba6f24e2e52595f2beb30117855515d53d6b7e3ce"},
+    {file = "urllib3_future-2.8.902-py3-none-any.whl", hash = "sha256:dfedd22a5bbedaac56dcd1339a8e13aae31335167d24d808c049062cfc6457e1"},
+    {file = "urllib3_future-2.8.902.tar.gz", hash = "sha256:0fe697506a102cdef458cc9bd909099e155a94c857fa48d681ab4ede3798d4ab"},
 ]
 
 [package.dependencies]
