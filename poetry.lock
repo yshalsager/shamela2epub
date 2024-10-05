@@ -1176,18 +1176,21 @@ telegram = ["requests"]
 
 [[package]]
 name = "trogon"
-version = "0.5.0"
+version = "0.6.0"
 description = "Automatically generate a Textual TUI for your Click CLI"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "trogon-0.5.0-py3-none-any.whl", hash = "sha256:987d2195c1dd2f93c50e555063a9de57edbc5906ce20ee39081343ff194952c1"},
-    {file = "trogon-0.5.0.tar.gz", hash = "sha256:61a57f0f1a38227d90601cd020f46960be8e36947b5e56c6932c2e01ecc5042a"},
+    {file = "trogon-0.6.0-py3-none-any.whl", hash = "sha256:fb5b6c25acd7a0eaba8d2cd32a57f1d80c26413cea737dad7a4eebcda56060e0"},
+    {file = "trogon-0.6.0.tar.gz", hash = "sha256:fd1abfeb7b15d79d6e6cfc9e724aad2a2728812e4713a744d975f133e7ec73a4"},
 ]
 
 [package.dependencies]
 click = ">=8.0.0"
-textual = ">=0.26.0"
+textual = ">=0.61.0"
+
+[package.extras]
+typer = ["typer (>=0.9.0)"]
 
 [[package]]
 name = "types-click"
@@ -1379,4 +1382,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<3.13"
-content-hash = "f182be451b3b05bd316e958982ef08429d35a13f3260480cf88167cc5ed0dd86"
+content-hash = "0c17dce0e5a552998ee3138fec40b0bf2c80e308bc7d67a7d30a5c3b6d48f53c"

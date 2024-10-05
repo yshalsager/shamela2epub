@@ -23,7 +23,7 @@ lxml = "^5.1.0"
 click = "^8.1.7"
 parsel = "^1.9.0"
 tomli = "^2.0.1"
-trogon = "^0.5.0"
+trogon = "^0.6.0"
 tqdm = "^4.65.0"
 
 [tool.poetry.group.gui.dependencies]
