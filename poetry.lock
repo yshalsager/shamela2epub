@@ -650,20 +650,20 @@ files = [
 
 [[package]]
 name = "niquests"
-version = "3.9.0"
+version = "3.9.1"
 description = "Niquests is a simple, yet elegant, HTTP library. It is a drop-in replacement for Requests, which is under feature freeze."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "niquests-3.9.0-py3-none-any.whl", hash = "sha256:7c23d5178ea2ab6a168ee392565612f54fd8eac959929d52d1fd1455d6753159"},
-    {file = "niquests-3.9.0.tar.gz", hash = "sha256:ef461fcc38dc6eade8215e59096593ba425f748ed22e20080f70be8c7d9fe724"},
+    {file = "niquests-3.9.1-py3-none-any.whl", hash = "sha256:b6a19a7796911c98ecfc6c54c4603066b9b45be0fabdfb367b797c4b2ace519f"},
+    {file = "niquests-3.9.1.tar.gz", hash = "sha256:4e43d7e7c247340fdf3f61e04cbc68a8aa6eebca00c76cda168325ab8caa4ea1"},
 ]
 
 [package.dependencies]
 charset-normalizer = ">=2,<4"
 idna = ">=2.5,<4"
 kiss-headers = ">=2,<4"
-urllib3-future = ">=2.10.900,<3"
+urllib3-future = ">=2.10.904,<3"
 wassima = ">=1.0.1,<2"
 
 [package.extras]
@@ -1242,13 +1242,13 @@ test = ["coverage", "pytest", "pytest-cov"]
 
 [[package]]
 name = "urllib3-future"
-version = "2.10.902"
+version = "2.10.906"
 description = "urllib3.future is a powerful HTTP 1.1, 2, and 3 client with both sync and async interfaces"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "urllib3_future-2.10.902-py3-none-any.whl", hash = "sha256:1af0ca90741557fb22177c87005398051a0acb1c4e627317ef16c10098dbbf02"},
-    {file = "urllib3_future-2.10.902.tar.gz", hash = "sha256:8800ef698b7e27721d5c531f18b413b30c22f064fce64e38de521e4bafed8f7d"},
+    {file = "urllib3_future-2.10.906-py3-none-any.whl", hash = "sha256:c7372afdc07301482f9a62d5cd0f3a10df76b32791baf5f86d45aff4fd924fa7"},
+    {file = "urllib3_future-2.10.906.tar.gz", hash = "sha256:16581dfd0c5d0a0602ae1305a1942fb06e929aea6ffcd588bc1b57090661d0b4"},
 ]
 
 [package.dependencies]
