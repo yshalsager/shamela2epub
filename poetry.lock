@@ -927,13 +927,13 @@ files = [
 
 [[package]]
 name = "pyqtdarktheme-fork"
-version = "2.3.2"
+version = "2.3.4"
 description = "Flat dark theme for PySide and PyQt."
 optional = false
-python-versions = ">=3.8,<3.13"
+python-versions = "<3.14,>=3.8"
 files = [
-    {file = "pyqtdarktheme_fork-2.3.2-py3-none-any.whl", hash = "sha256:d96ee64f0884678fad9b6bc352d5e37d84ca786fa60ed32ffaa7e6c6bc67e964"},
-    {file = "pyqtdarktheme_fork-2.3.2.tar.gz", hash = "sha256:3ea94fed5df262d960378409357c63032639f749794d766f41a45ad8558b2523"},
+    {file = "pyqtdarktheme_fork-2.3.4-py3-none-any.whl", hash = "sha256:a1682eb0aa0f1f03cb6a081c5d58f0d30dcd862f3f7398f0773a3ba6aa25cb2a"},
+    {file = "pyqtdarktheme_fork-2.3.4.tar.gz", hash = "sha256:2a5fab9d2122e52f772a7088e87be1fc0af767346e5fa0b1333e6813ebb2116c"},
 ]
 
 [package.dependencies]
