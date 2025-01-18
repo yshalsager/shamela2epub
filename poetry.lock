@@ -1457,5 +1457,5 @@ certifi = {version = "*", markers = "platform_python_implementation != \"CPython
 
 [metadata]
 lock-version = "2.0"
-python-versions = ">=3.12,<3.13"
-content-hash = "18b63044ebed0fd4e3ec6a3f9b110919af7ce86c88c5e58ae4153b3574e92dd0"
+python-versions = ">=3.13,<3.14"
+content-hash = "78ad5abf25d299190eb43852178eb7b71c65cc8a52afd1ddb090ff8d118da340"
