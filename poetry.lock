@@ -261,20 +261,6 @@ files = [
 license = ["ukkonen"]
 
 [[package]]
-name = "idna"
-version = "3.10"
-description = "Internationalized Domain Names in Applications (IDNA)"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3"},
-    {file = "idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"},
-]
-
-[package.extras]
-all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
-
-[[package]]
 name = "jh2"
 version = "5.0.4"
 description = "HTTP/2 State-Machine based protocol implementation"
@@ -360,17 +346,6 @@ python-versions = ">=3.7"
 files = [
     {file = "jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980"},
     {file = "jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe"},
-]
-
-[[package]]
-name = "kiss-headers"
-version = "2.4.3"
-description = "Object-oriented HTTP and IMAP (structured) headers."
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "kiss_headers-2.4.3-py3-none-any.whl", hash = "sha256:9d800b77532068e8748be9f96f30eaeb547cdc5345e4689ddf07b77071256239"},
-    {file = "kiss_headers-2.4.3.tar.gz", hash = "sha256:70c689ce167ac83146f094ea916b40a3767d67c2e05a4cb95b0fd2e33bf243f1"},
 ]
 
 [[package]]
@@ -688,19 +663,17 @@ files = [
 
 [[package]]
 name = "niquests"
-version = "3.12.1"
+version = "3.13.0"
 description = "Niquests is a simple, yet elegant, HTTP library. It is a drop-in replacement for Requests, which is under feature freeze."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "niquests-3.12.1-py3-none-any.whl", hash = "sha256:7c18175bdfc7651c158361124a277ad90eb3532c5ecb71f8c0a5474abf8ace71"},
-    {file = "niquests-3.12.1.tar.gz", hash = "sha256:cd7343d9e2c463516fb8a4fbddfdf350759cc1e83d1cafe0e8ab7e2d8d9e35a3"},
+    {file = "niquests-3.13.0-py3-none-any.whl", hash = "sha256:546a43380143a44a8c2209124b21f77e3d45ac2afdac25770eb9fbb1c0b63f85"},
+    {file = "niquests-3.13.0.tar.gz", hash = "sha256:610394607033a4a955b714be2635fd8c5840cab234277930a10329d9e3fd3879"},
 ]
 
 [package.dependencies]
 charset-normalizer = ">=2,<4"
-idna = ">=2.5,<4"
-kiss-headers = ">=2,<4"
 urllib3-future = ">=2.12.900,<3"
 wassima = ">=1.0.1,<2"
 
@@ -886,6 +859,8 @@ description = "The subset of a Qt installation needed by PyQt6."
 optional = false
 python-versions = "*"
 files = [
+    {file = "PyQt6_Qt6-6.8.1-1-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:2f4b8b55b1414b93f340f22e8c88d25550efcdebc4b65a3927dd947b73bd4358"},
+    {file = "PyQt6_Qt6-6.8.1-1-py3-none-manylinux_2_39_aarch64.whl", hash = "sha256:98aa99fe38ae68c5318284cd28f3479ba538c40bf6ece293980abae0925c1b24"},
     {file = "PyQt6_Qt6-6.8.1-py3-none-macosx_10_14_x86_64.whl", hash = "sha256:1eb8460a1fdb38d0b2458c2974c01d471c1e59e4eb19ea63fc447aaba3ad530e"},
     {file = "PyQt6_Qt6-6.8.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:9f3790c4ce4dc576e48b8718d55fb8743057e6cbd53a6ca1dd253ffbac9b7287"},
     {file = "PyQt6_Qt6-6.8.1-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:d6ca5d2b9d2ec0ee4a814b2175f641a5c4299cb80b45e0f5f8356632663f89b3"},
