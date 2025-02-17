@@ -45,11 +45,6 @@ dev = [
     "pyinstaller>=6.5.0,<7",
 ]
 
-[tool.uv]
-default-groups = [
-    "gui",
-]
-
 [tool.hatch.build.targets.sdist]
 include = [
     "shamela2epub",
