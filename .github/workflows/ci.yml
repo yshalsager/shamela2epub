@@ -36,9 +36,9 @@ jobs:
             compress_cmd: 'zip -r9'
             file_pattern: 'dist/shamela2epub*'
           - variant: 'main'
-            install_cmd: 'uv sync --dev'
+            install_cmd: 'uv sync'
           - variant: 'gui'
-            install_cmd: 'uv sync --all-groups --dev'
+            install_cmd: 'uv sync --group gui'
     steps:
       - uses: actions/checkout@v4
       - name: Install UV
@@ -51,7 +51,7 @@ jobs:
       - name: Install requirements
         run: ${{ matrix.install_cmd }}
       - name: Package Application
-        run: uv run pyinstaller shamela2epub${{ matrix.variant == 'gui' && 'gui' || '' }}.spec
+        run: uv run --with "pyinstaller>=6.5.0,<7" pyinstaller shamela2epub${{ matrix.variant == 'gui' && 'gui' || '' }}.spec
       - name: Display structure of files
         run: ls -R
       - name: Compress
