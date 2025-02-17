@@ -65,7 +65,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.rtx.toml
+.mise.local.toml
 
 # IDE
 .idea/

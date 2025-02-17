@@ -19,9 +19,7 @@ try:
 except metadata.PackageNotFoundError:
     # otherwise, read version from pyproject
 
-    __version__ = tomli.loads((PARENT_DIR / "pyproject.toml").read_text())["tool"]["poetry"][
-        "version"
-    ]
+    __version__ = tomli.loads((PARENT_DIR / "pyproject.toml").read_text())["project"]["version"]
 
 
 OUT_DIR = PARENT_DIR / "out"

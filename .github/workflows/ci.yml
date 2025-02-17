@@ -21,7 +21,7 @@ jobs:
       matrix:
         os: [ 'windows-latest', 'macos-latest', 'ubuntu-latest' ]
         python-version: [ '3.12' ]
-        poetry-version: [ "1.8.2" ]
+        uv-version: [ "0.6.0" ]
         variant: [ 'main', 'gui' ]
         architecture: [ 'x64' ]
         include:
@@ -36,32 +36,22 @@ jobs:
             compress_cmd: 'zip -r9'
             file_pattern: 'dist/shamela2epub*'
           - variant: 'main'
-            install_cmd: 'poetry install --with main --with dev'
+            install_cmd: 'uv sync --dev'
           - variant: 'gui'
-            install_cmd: 'poetry install --with main --with dev --with gui'
+            install_cmd: 'uv sync --all-groups --dev'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Install UV
+        uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.architecture }}
-      - name: Install Poetry
-        uses: abatilo/actions-poetry@v3
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-      - name: Setup a local virtual environment
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-      - name: Caching
-        uses: actions/cache@v4
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
+          version: ${{ matrix.uv-version }}
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
       - name: Install requirements
         run: ${{ matrix.install_cmd }}
       - name: Package Application
-        run: poetry run pyinstaller shamela2epub${{ matrix.variant == 'gui' && 'gui' || '' }}.spec
+        run: uv run pyinstaller shamela2epub${{ matrix.variant == 'gui' && 'gui' || '' }}.spec
       - name: Display structure of files
         run: ls -R
       - name: Compress

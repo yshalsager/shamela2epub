@@ -35,8 +35,8 @@ pip install shamela2epub
 ### From the cloned repository
 
 ```bash
-# Using poetry
-poetry install
+# Using uv
+uv sync
 
 # or using pip 18+
 pip install .
