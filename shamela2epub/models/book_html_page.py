@@ -153,8 +153,6 @@ class BookHTMLPage(BookBaseHTMLPage):
         hamesh: SelectorList = self.content.css(".hamesh")
         if not hamesh:
             return hamesh_items
-        hamesh_counter = 0
-        current_hamesh = ""
         hamesh_continuation = HAMESH_CONTINUATION_PATTERN.search(str(hamesh))
         if hamesh_continuation:
             type(self)._previous_page_hamesh = (
@@ -164,8 +162,7 @@ class BookHTMLPage(BookBaseHTMLPage):
             )
         elif not type(self)._previous_page_hamesh:
             type(self)._previous_page_hamesh = ""
-        for match in HAMESH_PATTERN.finditer(hamesh.get("")):
-            hamesh_counter += 1
+        for hamesh_counter, match in enumerate(HAMESH_PATTERN.finditer(hamesh.get("")), 1):
             current_hamesh = match.group("number").strip()
             hamesh_line = match.group("content").strip()
             #  <aside id="fn1" epub:type="footnote">

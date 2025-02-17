@@ -4,11 +4,12 @@ import logging
 from collections.abc import Callable
 from pathlib import Path
 
+from niquests import codes
 from tqdm import tqdm
 from urllib3.exceptions import HTTPError
 
 from shamela2epub import OUT_DIR
-from shamela2epub.misc.http import MAX_RETRIES, TIME_OUT, get_session
+from shamela2epub.misc.http_utils import MAX_RETRIES, TIME_OUT, get_session
 from shamela2epub.misc.utils import get_book_first_page_url, get_book_info_page_url, is_valid_url
 from shamela2epub.models.book_html_page import BookHTMLPage
 from shamela2epub.models.book_info_html_page import BookInfoHTMLPage
@@ -60,7 +61,7 @@ class BookDownloader:
             for idx, response in enumerate(responses):
                 for _i in range(MAX_RETRIES):
                     try:
-                        if response.status_code == 200:
+                        if response.status_code == codes.ok:
                             break
                     except (TimeoutError, HTTPError) as err:
                         logging.warning(f"(try {_i}): {err}")
@@ -68,7 +69,7 @@ class BookDownloader:
                             f"{self.url}/{pages[idx]}", timeout=TIME_OUT
                         )
                         continue
-                    except Exception as err:
+                    except Exception as err:  # noqa: BLE001
                         logging.error(f"Error (try {_i}): {err}")
                         continue
                 self.epub_book.add_page(BookHTMLPage(response.url, response.text))
