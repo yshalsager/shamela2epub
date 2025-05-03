@@ -15,7 +15,7 @@ keywords = [
 ]
 dependencies = [
     "niquests>=3.5.3,<4",
-    "EbookLib>=0.17.1,<0.19.0",
+    "EbookLib>=0.19,<0.20.0",
     "lxml>=5.1.0,<6",
     "click>=8.1.7,<9",
     "parsel>=1.9.0,<2",
