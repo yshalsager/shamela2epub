@@ -37,7 +37,7 @@ def browse_file_directory(filepath: Path) -> None:
     if system() == "Windows":
         import os  # noqa: PLC0415
 
-        os.startfile(filepath.parent)  # type: ignore[attr-defined]
+        os.startfile(filepath.parent)  # type: ignore[attr-defined]  # noqa: S606
     elif system() == "Darwin":
         Popen(["open", filepath.parent])  # noqa: S603, S607
     else:
