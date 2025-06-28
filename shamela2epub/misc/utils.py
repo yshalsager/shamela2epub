@@ -35,7 +35,7 @@ def get_stylesheet() -> str:
 def browse_file_directory(filepath: Path) -> None:
     """Browse a file parent directory in OS file explorer."""
     if system() == "Windows":
-        from os import startfile  # noqa: PLC0415
+        from os import startfile  # noqa: PLC0415 type: ignore[attr-defined]
 
         startfile(filepath.parent)  # noqa: S606
     elif system() == "Darwin":
