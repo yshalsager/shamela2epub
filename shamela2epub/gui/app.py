@@ -1,3 +1,4 @@
+import sys
 from functools import partial
 from pathlib import Path
 from typing import cast
@@ -155,7 +156,6 @@ class App(QMainWindow):
 @click.command()
 def gui() -> None:
     """Run Shamela2Epub GUI."""
-    import sys
 
     app = QApplication(sys.argv)
     window = App()

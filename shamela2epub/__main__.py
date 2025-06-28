@@ -15,7 +15,7 @@ def click_cli() -> None:
 def main() -> None:
     click_cli.add_command(download)
     try:
-        from shamela2epub.gui.app import gui
+        from shamela2epub.gui.app import gui  # noqa: PLC0415
 
         click_cli.add_command(gui)
     except ImportError:
