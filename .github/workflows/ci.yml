@@ -40,7 +40,7 @@ jobs:
           - variant: 'gui'
             install_cmd: 'uv sync --group gui'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install UV
         uses: astral-sh/setup-uv@v6
         with:
