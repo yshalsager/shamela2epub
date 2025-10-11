@@ -5,7 +5,7 @@ description = "A CLI and GUI tool to download a book on https://shamela.ws to an
 authors = [{ name = "yshalsager", email = "ysh-alsager@hotmail.com" }]
 readme = "README.md"
 license = "GPL-3.0-only"
-requires-python = ">=3.13,<3.14"
+requires-python = ">=3.14,<3.13"
 keywords = [
     "epub3",
     "shamela",
