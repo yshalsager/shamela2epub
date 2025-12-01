@@ -6,7 +6,7 @@ from trogon import tui
 from shamela2epub.cli.app import download
 
 
-@tui()  # type: ignore[misc]
+@tui()  # type: ignore[untyped-decorator]
 @click.group()
 def click_cli() -> None:
     pass
