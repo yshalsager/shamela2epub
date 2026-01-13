@@ -2,6 +2,10 @@
 
 > A CLI and GUI tool to download a book on [Shamela Library Website](https://shamela.ws) into an EPUB book.
 
+## Note
+
+This tool is no longer developed, use the new tool https://github.com/yshalsager/shamela-epub-exporter
+
 [![en](https://img.shields.io/badge/README-English-AB8B64.svg)](README.md)
 [![ara](https://img.shields.io/badge/README-Arabic-AB8B64.svg)](README.ar.md)
 
